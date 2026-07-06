@@ -96,7 +96,7 @@ export default function DebtsList({
 
     if (selectedClientId === 'NEW_PASSING') {
       const newHistoryEntry: DebtHistoryEntry = {
-        id: `dh-${Date.now()}`,
+        id: `-${Date.now()}`,
         date: new Date().toISOString(),
         type: 'set',
         changeAmount: amountNum,
@@ -126,7 +126,7 @@ export default function DebtsList({
       const existingClient = clients.find(c => c.id === selectedClientId);
       if (existingClient) {
         const newHistoryEntry: DebtHistoryEntry = {
-          id: `dh-${Date.now()}`,
+          id: `-${Date.now()}`,
           date: new Date().toISOString(),
           type: 'increase',
           changeAmount: amountNum,
@@ -172,7 +172,7 @@ export default function DebtsList({
     let historyEntry: DebtHistoryEntry | null = null;
     if (diff !== 0) {
       historyEntry = {
-        id: `dh-${Date.now()}`,
+        id: `-${Date.now()}`,
         date: new Date().toISOString(),
         type: diff > 0 ? 'increase' : 'decrease',
         changeAmount: Math.abs(diff),
@@ -224,7 +224,7 @@ export default function DebtsList({
 
     const finalDebt = (settlingClient.outstandingDebt || 0) - amt;
     const newHistoryEntry: DebtHistoryEntry = {
-      id: `dh-${Date.now()}`,
+      id: `-${Date.now()}`,
       date: new Date().toISOString(),
       type: 'decrease',
       changeAmount: amt,
@@ -276,7 +276,7 @@ export default function DebtsList({
         
         <div className="bg-white px-5 py-3 rounded-2xl border border-rose-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
           <p className="text-xs text-rose-400 font-bold uppercase mb-1">{isRtl ? 'إجمالي الديون المعلقة' : 'Total des dettes'}</p>
-          <p className="text-xl font-black text-rose-600 font-mono">{totalDebts.toFixed(2)} DH</p>
+          <p className="text-xl font-black text-rose-600 font-mono">{totalDebts.toFixed(2)} </p>
         </div>
       </div>
 
@@ -351,7 +351,7 @@ export default function DebtsList({
                     </div>
                     <div className="text-right">
                       <span className="font-black text-rose-600 text-base font-mono bg-rose-50 px-2 py-1 rounded-lg">
-                        {(c.outstandingDebt || 0).toFixed(2)} DH
+                        {(c.outstandingDebt || 0).toFixed(2)} 
                       </span>
                     </div>
                   </div>
@@ -474,7 +474,7 @@ export default function DebtsList({
                       </td>
                       <td className="py-4 px-6 text-right">
                         <span className="font-black text-rose-600 text-base font-mono bg-rose-50 px-2 py-1 rounded-lg">
-                          {(c.outstandingDebt || 0).toFixed(2)} DH
+                          {(c.outstandingDebt || 0).toFixed(2)} 
                         </span>
                       </td>
                       <td className="py-4 px-6 text-center">
@@ -597,7 +597,7 @@ export default function DebtsList({
                 <input type="text" value={addDebtNote} onChange={e => setAddDebtNote(e.target.value)} className="w-full p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 outline-none" />
               </div>
               <div>
-                <label className="block text-xs text-slate-500 mb-1">{isRtl ? 'المبلغ (درهم) *' : 'Montant (DH) *'}</label>
+                <label className="block text-xs text-slate-500 mb-1">{isRtl ? 'المبلغ *' : 'Montant *'}</label>
                 <input required type="number" step="0.01" min="0" value={addAmount} onChange={e => setAddAmount(e.target.value)} className="w-full p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 outline-none font-mono text-rose-600 font-bold bg-rose-50/30" />
               </div>
               <div className="pt-2">
@@ -623,11 +623,11 @@ export default function DebtsList({
             <form onSubmit={handleSettleSubmit} className="p-5 space-y-4 text-sm font-semibold overflow-y-auto flex-1 pb-10">
               <div className="bg-slate-50 p-3 rounded-xl border border-slate-100 flex justify-between items-center">
                 <span className="text-slate-500 text-xs">{isRtl ? 'إجمالي الدين:' : 'Dette totale:'}</span>
-                <span className="font-black font-mono text-rose-600">{(settlingClient.outstandingDebt || 0).toFixed(2)} DH</span>
+                <span className="font-black font-mono text-rose-600">{(settlingClient.outstandingDebt || 0).toFixed(2)} </span>
               </div>
               
               <div>
-                <label className="block text-xs text-slate-500 mb-1">{isRtl ? 'المبلغ المسدد (درهم) *' : 'Montant réglé (DH) *'}</label>
+                <label className="block text-xs text-slate-500 mb-1">{isRtl ? 'المبلغ المسدد *' : 'Montant réglé *'}</label>
                 <input required type="number" step="0.01" min="0" max={settlingClient.outstandingDebt} value={settleAmount} onChange={e => setSettleAmount(e.target.value)} className="w-full p-3 rounded-xl border border-emerald-200 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none font-mono text-emerald-700 font-black bg-emerald-50/50 text-lg" autoFocus placeholder="0.00" />
               </div>
               <div>
@@ -677,7 +677,7 @@ export default function DebtsList({
                 <input type="text" value={editDebtNote} onChange={e => setEditDebtNote(e.target.value)} className="w-full p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 outline-none" />
               </div>
               <div>
-                <label className="block text-xs text-slate-500 mb-1">{isRtl ? 'المبلغ المتبقي الحالي (درهم) *' : 'Montant actuel (DH) *'}</label>
+                <label className="block text-xs text-slate-500 mb-1">{isRtl ? 'المبلغ المتبقي الحالي *' : 'Montant actuel *'}</label>
                 <input required type="number" step="0.01" min="0" value={editAmount} onChange={e => setEditAmount(e.target.value)} className="w-full p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 outline-none font-mono text-rose-600 font-bold bg-rose-50/30" />
               </div>
               <div className="pt-2">
@@ -741,10 +741,10 @@ export default function DebtsList({
                             )}
                           </td>
                           <td className={`py-3 px-3 text-right font-black font-mono ${entry.type === 'increase' ? 'text-rose-600' : entry.type === 'decrease' ? 'text-emerald-600' : 'text-blue-600'}`}>
-                            {entry.type === 'increase' ? '+' : entry.type === 'decrease' ? '-' : ''}{entry.changeAmount.toFixed(2)} DH
+                            {entry.type === 'increase' ? '+' : entry.type === 'decrease' ? '-' : ''}{entry.changeAmount.toFixed(2)} 
                           </td>
                           <td className="py-3 px-3 text-right font-bold text-slate-900 font-mono">
-                            {entry.newBalance.toFixed(2)} DH
+                            {entry.newBalance.toFixed(2)} 
                           </td>
                           <td className="py-3 px-3 text-slate-500 max-w-[150px] truncate" title={entry.notes}>
                             {entry.notes || '—'}

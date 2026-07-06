@@ -418,8 +418,8 @@ export default function App() {
 
     logActivity(
       'sale',
-      `إصدار فاتورة مبيعات جديدة بقيمة ${newInvoice.total.toFixed(2)} DH للزبون "${newInvoice.clientName}"`,
-      `Création d'une nouvelle facture de ${newInvoice.total.toFixed(2)} DH pour le client "${newInvoice.clientName}"`,
+      `إصدار فاتورة مبيعات جديدة بقيمة ${newInvoice.total.toFixed(2)} للزبون "${newInvoice.clientName}"`,
+      `Création d'une nouvelle facture de ${newInvoice.total.toFixed(2)} pour le client "${newInvoice.clientName}"`,
       newInvoice.invoiceNumber
     );
   };
@@ -540,8 +540,8 @@ export default function App() {
     setProducts(prev => [...prev, p]);
     logActivity(
       'product_add',
-      `إضافة منتج جديد: "${p.name}" في صنف ${p.category} بسعر بيع ${p.sellPrice} DH`,
-      `Ajout d'un nouveau produit: "${p.name}" dans la catégorie ${p.category} au prix de ${p.sellPrice} DH`,
+      `إضافة منتج جديد: "${p.name}" في صنف ${p.category} بسعر بيع ${p.sellPrice} `,
+      `Ajout d'un nouveau produit: "${p.name}" dans la catégorie ${p.category} au prix de ${p.sellPrice} `,
       p.id
     );
   };
@@ -726,8 +726,8 @@ export default function App() {
 
     logActivity(
       'invoice_edit',
-      `تعديل الفاتورة رقم ${updatedInvoice.invoiceNumber} للزبون "${updatedInvoice.clientName}" - المجموع الحالي: ${updatedInvoice.total.toFixed(2)} DH`,
-      `Modification de la facture n° ${updatedInvoice.invoiceNumber} pour le client "${updatedInvoice.clientName}" - Nouveau Total: ${updatedInvoice.total.toFixed(2)} DH`,
+      `تعديل الفاتورة رقم ${updatedInvoice.invoiceNumber} للزبون "${updatedInvoice.clientName}" - المجموع الحالي: ${updatedInvoice.total.toFixed(2)} `,
+      `Modification de la facture n° ${updatedInvoice.invoiceNumber} pour le client "${updatedInvoice.clientName}" - Nouveau Total: ${updatedInvoice.total.toFixed(2)} `,
       updatedInvoice.id
     );
   };
@@ -1061,8 +1061,8 @@ export default function App() {
             clientName: c.name,
             daysLeft: diffDays,
             message: lang === 'ar' 
-              ? `دين مستحق على الزبون ${c.name} بقيمة ${c.outstandingDebt} DH (${diffDays < 0 ? 'متأخر' : diffDays === 0 ? 'اليوم' : 'غداً'})`
-              : `Dette due pour ${c.name} de ${c.outstandingDebt} DH (${diffDays < 0 ? 'En retard' : diffDays === 0 ? 'Aujourd\'hui' : 'Demain'})`
+              ? `دين مستحق على الزبون ${c.name} بقيمة ${c.outstandingDebt} (${diffDays < 0 ? 'متأخر' : diffDays === 0 ? 'اليوم' : 'غداً'})`
+              : `Dette due pour ${c.name} de ${c.outstandingDebt} (${diffDays < 0 ? 'En retard' : diffDays === 0 ? 'Aujourd\'hui' : 'Demain'})`
           });
         }
       }

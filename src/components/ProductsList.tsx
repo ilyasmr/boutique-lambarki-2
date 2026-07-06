@@ -379,7 +379,7 @@ export default function ProductsList({
                   {/* Pricing displays ONLY Sale Price to avoid displaying buy sensitive costs here */}
                   <div className="flex items-center justify-between bg-slate-50/70 p-2.5 rounded-xl border border-slate-100">
                     <span className="text-[10px] text-slate-500 font-bold uppercase">{isRtl ? 'ثمن البيع :' : 'Prix Vente :'}:</span>
-                    <span className="font-mono text-xs font-black text-blue-900">{(p.sellPrice || 0).toFixed(2)} DH</span>
+                    <span className="font-mono text-xs font-black text-blue-900">{(p.sellPrice || 0).toFixed(2)} </span>
                   </div>
 
                   {/* Actions (Pencil is "ta3dil" / edit where they inspect everything) */}
@@ -443,7 +443,7 @@ export default function ProductsList({
                           {p.category}
                         </span>
                       </td>
-                      <td className="py-4 px-4 text-right font-mono font-bold text-blue-900">{(p.sellPrice || 0).toFixed(2)} DH</td>
+                      <td className="py-4 px-4 text-right font-mono font-bold text-blue-900">{(p.sellPrice || 0).toFixed(2)} </td>
                       <td className="py-4 px-4 text-center">
                         <label className="inline-flex items-center cursor-pointer justify-center">
                           <input 

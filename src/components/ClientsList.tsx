@@ -46,6 +46,19 @@ export default function ClientsList({
   const [selectedClient, setSelectedClient] = React.useState<Client | null>(null);
   const [sortBy, setSortBy] = React.useState<'default' | 'page_asc' | 'debt_desc' | 'debt_asc' | 'debt_date_desc' | 'debt_date_asc' | 'debt_duedate_asc' | 'spent_desc' | 'check_expiry' | 'check_amount_desc'>('default');
 
+  const [notebooks, setNotebooks] = React.useState<{id: string, name: string}[]>(() => {
+    const stored = localStorage.getItem('app_notebooks');
+    return stored ? JSON.parse(stored) : [{ id: 'default', name: isRtl ? 'الدفتر الرئيسي' : 'Cahier Principal' }];
+  });
+  
+  const [activeNotebookId, setActiveNotebookId] = React.useState<string>(() => {
+    return localStorage.getItem('app_active_notebook') || 'default';
+  });
+
+  const getClientPage = React.useCallback((c: Client) => {
+    return (c.notebookPages && c.notebookPages[activeNotebookId]) || c.pageNumber || 0;
+  }, [activeNotebookId]);
+
   // Helper to obtain a unique chronological index for each customer
   const getSequentialNumber = React.useCallback((client: Client) => {
     const sorted = [...clients].sort((a, b) => {
@@ -111,7 +124,7 @@ export default function ClientsList({
   const [formOutstandingDebt, setFormOutstandingDebt] = React.useState<number>(0);
   const [formDebtDate, setFormDebtDate] = React.useState<string>(todayStr);
   const [formDebtDueDate, setFormDebtDueDate] = React.useState<string>('');
-  const [formPageNumber, setFormPageNumber] = React.useState<number>(0);
+  const [formPageNumber, setFormPageNumber] = React.useState<number | string>('');
   
   // Postal Check Form States
   const [formHasPostalCheck, setFormHasPostalCheck] = React.useState<boolean>(false);
@@ -214,7 +227,7 @@ export default function ClientsList({
     setFormDebtDueDate(c.debtDueDate || '');
     setFormHasPostalCheck(c.hasPostalCheck || (c.postalChecks && c.postalChecks.length > 0) || false);
     setFormPostalChecks(c.postalChecks || []);
-    setFormPageNumber(c.pageNumber || 0);
+    setFormPageNumber(getClientPage(c));
     setTempAmount('');
     setTempEntryDate(todayStr);
     setTempExpiryDate(todayStr);
@@ -233,7 +246,7 @@ export default function ClientsList({
     setFormHasPostalCheck(false);
     setFormPostalChecks([]);
     
-    const maxPage = clients.reduce((max, c) => Math.max(max, c.pageNumber || 0), 0);
+    const maxPage = clients.reduce((max, c) => Math.max(max, Number(getClientPage(c)) || 0), 0);
     setFormPageNumber(maxPage + 1);
 
     setTempAmount('');
@@ -575,17 +588,17 @@ export default function ClientsList({
                   >
                     <td className="py-3.5 px-4 font-bold text-gray-800">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-blue-50 text-blue-600 font-black flex items-center justify-center shrink-0 border border-blue-100">
-                          {c.name.charAt(0).toUpperCase()}
+                        <div className="w-10 h-10 rounded-full bg-blue-50 text-blue-600 font-black flex items-center justify-center shrink-0 border border-blue-100 text-sm shadow-sm">
+                          {getClientPage(c)}
                         </div>
                         <div>
                           <p className="font-bold text-gray-900 text-sm">{c.name.split(' ').slice(0, 2).join(' ')}</p>
                           <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
-                            {c.pageNumber && (
-                              <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 text-[10px] font-bold border border-slate-200 shadow-sm">
-                                {isRtl ? 'صفحة:' : 'Page:'} {c.pageNumber}
+                            {getClientPage(c) ? (
+                              <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 text-[10px] font-bold border border-slate-200 shadow-sm hidden">
+                                {isRtl ? 'صفحة:' : 'Page:'} {getClientPage(c)}
                               </span>
-                            )}
+                            ) : null}
                             {c.postalChecks && c.postalChecks.length > 0 && (
                               <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600 text-[10px] font-bold border border-indigo-100 shadow-sm">
                                 <span className="w-1 h-1 rounded-full bg-indigo-500 animate-pulse"></span>
@@ -699,7 +712,7 @@ export default function ClientsList({
                   {isRtl ? 'سجل أرقام صفحات الدفتر' : 'Historique des Pages de Cahier'}
                 </h4>
                 <span className="px-2 py-0.5 rounded-md text-[9px] font-black uppercase bg-blue-100 text-blue-800">
-                  {isRtl ? `الصفحة الحالية: ${selectedClient.pageNumber || '—'}` : `Page Actuelle: ${selectedClient.pageNumber || '—'}`}
+                  {isRtl ? `الصفحة الحالية: ${getClientPage(selectedClient) || '—'}` : `Page Actuelle: ${getClientPage(selectedClient) || '—'}`}
                 </span>
               </div>
 
@@ -736,7 +749,7 @@ export default function ClientsList({
                     return (
                       <div key={chk.id} className="bg-white p-2.5 border border-indigo-50 rounded-lg flex flex-col gap-1.5 shadow-sm">
                         <div className="flex justify-between items-center">
-                          <span className="font-extrabold text-indigo-900 font-mono text-[11px]">{chk.amount.toFixed(2)} DH</span>
+                          <span className="font-extrabold text-indigo-900 font-mono text-[11px]">{chk.amount.toFixed(2)} </span>
                           <span className={`px-1.5 py-0.5 rounded text-[8.5px] font-black uppercase border ${status.className}`}>
                             {status.label}
                           </span>
@@ -788,7 +801,7 @@ export default function ClientsList({
               </h4>
               <div className="grid grid-cols-2 gap-2 text-xxs font-bold text-slate-700">
                 <div className="col-span-2">
-                  <label className="block text-[9px] text-slate-400 mb-0.5">{isRtl ? 'المبلغ (درهم) *' : 'Montant (DH) *'}</label>
+                  <label className="block text-[9px] text-slate-400 mb-0.5">{isRtl ? 'المبلغ *' : 'Montant *'}</label>
                   <input
                     type="number"
                     min="0"
@@ -970,13 +983,13 @@ export default function ClientsList({
               <div className="bg-rose-50/50 p-3 rounded-xl border border-rose-100 text-center">
                 <p className="text-xxs text-rose-800 uppercase tracking-wide">{isRtl ? 'إجمالي الدين الحالي للتسوية :' : 'Total dette restante à solder :'}</p>
                 <p className="text-lg font-black text-rose-700 font-mono mt-0.5">
-                  {(selectedClient.outstandingDebt || 0).toFixed(2)} DH
+                  {(selectedClient.outstandingDebt || 0).toFixed(2)} 
                 </p>
               </div>
 
               {/* Repay Amount */}
               <div className="space-y-1">
-                <label className="text-xxs text-slate-400 uppercase tracking-wide">{isRtl ? 'المبلغ المستخلص بالدرهم *' : 'Montant à rembourser (DH) *'}</label>
+                <label className="text-xxs text-slate-400 uppercase tracking-wide">{isRtl ? 'المبلغ المستخلص بال *' : 'Montant à rembourser *'}</label>
                 <input
                   type="number"
                   required

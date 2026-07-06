@@ -255,8 +255,8 @@ export default function Account({
     if (onLogActivity) {
       onLogActivity(
         'withdraw_add',
-        `عملية سحب نقدي جديدة بقيمة ${amount.toFixed(2)} DH لفائدة "${newWithdrawal.person}" (السبب الداعي: ${newWithdrawal.notes})`,
-        `Nouveau retrait de caisse de ${amount.toFixed(2)} DH pour "${newWithdrawal.person}" (Motif: ${newWithdrawal.notes})`,
+        `عملية سحب نقدي جديدة بقيمة ${amount.toFixed(2)} لفائدة "${newWithdrawal.person}" (السبب الداعي: ${newWithdrawal.notes})`,
+        `Nouveau retrait de caisse de ${amount.toFixed(2)} pour "${newWithdrawal.person}" (Motif: ${newWithdrawal.notes})`,
         newWithdrawal.id
       );
     }
@@ -276,8 +276,8 @@ export default function Account({
       if (onLogActivity) {
         onLogActivity(
           'withdraw_delete',
-          `حذف مستند صرف بقيمة ${w.amount.toFixed(2)} DH لفائدة "${w.person}"`,
-          `Suppression d'un retrait de ${w.amount.toFixed(2)} DH pour "${w.person}"`,
+          `حذف مستند صرف بقيمة ${w.amount.toFixed(2)} لفائدة "${w.person}"`,
+          `Suppression d'un retrait de ${w.amount.toFixed(2)} pour "${w.person}"`,
           id
         );
       }
@@ -321,8 +321,8 @@ export default function Account({
     if (onLogActivity) {
       onLogActivity(
         'withdraw_edit',
-        `تعديل مستند صرف (المرجع #${editingWithdrawal.id.substring(editingWithdrawal.id.length - 5)}) بقيمة ${amount.toFixed(2)} DH لفائدة "${finalPerson}"`,
-        `Modification du retrait #${editingWithdrawal.id.substring(editingWithdrawal.id.length - 5)} de ${amount.toFixed(2)} DH pour "${finalPerson}"`,
+        `تعديل مستند صرف (المرجع #${editingWithdrawal.id.substring(editingWithdrawal.id.length - 5)}) بقيمة ${amount.toFixed(2)} لفائدة "${finalPerson}"`,
+        `Modification du retrait #${editingWithdrawal.id.substring(editingWithdrawal.id.length - 5)} de ${amount.toFixed(2)} pour "${finalPerson}"`,
         editingWithdrawal.id
       );
     }
@@ -363,8 +363,8 @@ export default function Account({
       const reasonText = adjustmentReason.trim() || (isRtl ? 'تعديل مالي يدوي عام' : 'Ajustement financier manuel');
       onLogActivity(
         'withdraw_add',
-        `تعديل مالي: تم تعديل "${fieldAr}" من ${previousVal.toLocaleString(undefined, { minimumFractionDigits: 2 })} DH إلى ${val.toLocaleString(undefined, { minimumFractionDigits: 2 })} DH (المبرر: ${reasonText})`,
-        `Modif financière : "${fieldFr}" ajusté de ${previousVal.toLocaleString(undefined, { minimumFractionDigits: 2 })} DH à ${val.toLocaleString(undefined, { minimumFractionDigits: 2 })} DH (Raison : ${reasonText})`,
+        `تعديل مالي: تم تعديل "${fieldAr}" من ${previousVal.toLocaleString(undefined, { minimumFractionDigits: 2 })} إلى ${val.toLocaleString(undefined, { minimumFractionDigits: 2 })} (المبرر: ${reasonText})`,
+        `Modif financière : "${fieldFr}" ajusté de ${previousVal.toLocaleString(undefined, { minimumFractionDigits: 2 })} à ${val.toLocaleString(undefined, { minimumFractionDigits: 2 })} (Raison : ${reasonText})`,
         `financial-adj-${editingField}`
       );
     }
@@ -888,7 +888,7 @@ export default function Account({
                     </button>
                   </div>
                   <h4 className="text-lg font-black text-emerald-950 font-mono mt-1">
-                    {totalCashIncome.toLocaleString(undefined, { minimumFractionDigits: 2 })} DH
+                    {totalCashIncome.toLocaleString(undefined, { minimumFractionDigits: 2 })} 
                   </h4>
                   <p className="text-xxs text-emerald-600 mt-1">{isRtl ? 'إجمالي المقبوضات النقدية' : 'Total des encaissements'}</p>
                 </div>
@@ -918,7 +918,7 @@ export default function Account({
                   )}
                 </div>
                 <h4 className="text-lg font-black text-amber-600 font-mono mt-1">
-                  {totalWithdrawnAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })} DH
+                  {totalWithdrawnAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })} 
                 </h4>
                 <p className="text-xxs text-slate-500 mt-1">{isRtl ? `${withdrawals.length} سحوبات مسجلة` : `${withdrawals.length} retraits`}</p>
               </div>
@@ -949,7 +949,7 @@ export default function Account({
                     </button>
                   </div>
                   <h4 className="text-xl font-black font-mono mt-1">
-                    {currentDrawerBalance.toLocaleString(undefined, { minimumFractionDigits: 2 })} DH
+                    {currentDrawerBalance.toLocaleString(undefined, { minimumFractionDigits: 2 })} 
                   </h4>
                   <p className="text-xxs text-emerald-200 mt-1">
                     {currentDrawerBalance < 1000 
@@ -1098,7 +1098,7 @@ export default function Account({
                             <span className="block text-[10px] text-gray-400 italic truncate max-w-[130px]" title={w.notes}>{w.notes}</span>
                           </td>
                           <td className="py-3 px-2 text-right font-mono font-black text-amber-600">
-                            -{w.amount.toFixed(2)} DH
+                            -{w.amount.toFixed(2)} 
                           </td>
                           <td className="py-3 px-2 text-center text-[11px] text-gray-500 font-bold">
                             {resolveUserName(w.responsible, lang)}
@@ -1178,7 +1178,7 @@ export default function Account({
                   <div className="border-y border-dashed border-slate-900 py-3 text-center my-3">
                     <p className="text-[10px] text-slate-500 uppercase">{isRtl ? 'القيمة المسحوبة من الصرف' : 'MONTANT PRÉLEVÉ'}</p>
                     <h3 className="text-xl font-black mt-1 font-mono text-slate-900">
-                      {printWithdrawal.amount.toFixed(2)} DH
+                      {printWithdrawal.amount.toFixed(2)} 
                     </h3>
                   </div>
 
@@ -1243,7 +1243,7 @@ export default function Account({
                 <form onSubmit={handleSaveEdit} className="space-y-4">
                   {/* Amount */}
                   <div className="space-y-1">
-                    <label className="text-xxs font-black uppercase text-gray-400 block">{isRtl ? 'المبلغ المستهدف (DH)' : 'Montant Prélevé (DH)'}</label>
+                    <label className="text-xxs font-black uppercase text-gray-400 block">{isRtl ? 'المبلغ المستهدف' : 'Montant Prélevé'}</label>
                     <input
                       type="number"
                       step="0.01"
@@ -1559,7 +1559,7 @@ export default function Account({
                 <div className="text-slate-800 self-stretch sm:self-auto bg-white p-2.5 px-4 rounded-xl border border-red-100 text-right">
                   <p className="text-[10px] text-gray-400 font-bold uppercase">{isRtl ? 'الضرر المالي الناتج عن العجز المالي (شراء)' : 'Pertes Coût d\'Achat Restant'}</p>
                   <p className="font-mono text-base font-black text-red-600">
-                    -{auditAnalysis.deficitValue.toLocaleString(undefined, { minimumFractionDigits: 2 })} DH
+                    -{auditAnalysis.deficitValue.toLocaleString(undefined, { minimumFractionDigits: 2 })} 
                   </p>
                 </div>
               </div>
@@ -1615,8 +1615,8 @@ export default function Account({
                               )}
                             </div>
                           </td>
-                          <td className="py-3 px-2 text-center font-mono font-medium text-slate-500">{p.buyPrice.toFixed(1)} DH</td>
-                          <td className="py-3 px-2 text-center font-mono font-medium text-slate-500">{p.sellPrice.toFixed(1)} DH</td>
+                          <td className="py-3 px-2 text-center font-mono font-medium text-slate-500">{p.buyPrice.toFixed(1)} </td>
+                          <td className="py-3 px-2 text-center font-mono font-medium text-slate-500">{p.sellPrice.toFixed(1)} </td>
                           <td className="py-3 px-2 text-center font-mono font-extrabold bg-blue-50/10 text-blue-700">{expectedValue}</td>
                           <td className="py-3 px-2 text-center bg-emerald-50/10">
                             <div className="inline-flex items-center gap-1 text-center justify-center">
@@ -1657,10 +1657,10 @@ export default function Account({
                           </td>
                           <td className="py-3 px-2 text-right font-mono font-bold">
                             {diffValue === 0 ? (
-                              <span className="text-gray-300">0.00 DH</span>
+                              <span className="text-gray-300">0.00 </span>
                             ) : (
                               <span className={diffValue > 0 ? 'text-blue-600' : 'text-red-600'}>
-                                {diffValue > 0 ? '+' : ''}{profitLossValue.toFixed(2)} DH
+                                {diffValue > 0 ? '+' : ''}{profitLossValue.toFixed(2)} 
                               </span>
                             )}
                           </td>
@@ -1792,7 +1792,7 @@ export default function Account({
                         )}
                       </td>
                       <td className="py-3 px-2 text-right font-mono font-black text-red-600">
-                        {audit.totalDeficitValue > 0 ? `-${audit.totalDeficitValue.toFixed(1)} DH` : '0.00 DH'}
+                        {audit.totalDeficitValue > 0 ? `-${audit.totalDeficitValue.toFixed(1)} ` : '0.00 '}
                       </td>
                       <td className="py-3 px-2 italic text-[10px] text-gray-500 max-w-[200px] truncate" title={audit.notes}>
                         {audit.notes}
@@ -1964,7 +1964,7 @@ export default function Account({
                       {isRtl ? 'إجمالي المعاملات الخام (قبل الخصم)' : 'Chiffre d\'Affaires Brut'}
                     </span>
                     <span className="font-mono text-sm font-extrabold text-slate-800">
-                      {totalChiffreAffaireBrut.toLocaleString(undefined, { minimumFractionDigits: 2 })} DH
+                      {totalChiffreAffaireBrut.toLocaleString(undefined, { minimumFractionDigits: 2 })} 
                     </span>
                   </div>
                   {/* Discounts applied */}
@@ -1973,7 +1973,7 @@ export default function Account({
                       {isRtl ? 'مجموع التخفيضات والخصومات الممنوحة' : 'Total Remises & Réductions'}
                     </span>
                     <span className="font-mono text-sm font-extrabold text-amber-600">
-                      {totalDiscountsApplied.toLocaleString(undefined, { minimumFractionDigits: 2 })} DH
+                      {totalDiscountsApplied.toLocaleString(undefined, { minimumFractionDigits: 2 })} 
                     </span>
                   </div>
                   {/* Net turnover */}
@@ -1982,7 +1982,7 @@ export default function Account({
                       {isRtl ? 'إجمالي رقم المعاملات الصافي للحساب' : 'Chiffre d\'Affaires Net'}
                     </span>
                     <span className="font-mono text-xs font-black text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-lg border border-indigo-100">
-                      {totalChiffreAffaireNet.toLocaleString(undefined, { minimumFractionDigits: 2 })} DH
+                      {totalChiffreAffaireNet.toLocaleString(undefined, { minimumFractionDigits: 2 })} 
                     </span>
                   </div>
                   {/* Net Profits */}
@@ -1991,7 +1991,7 @@ export default function Account({
                       {isRtl ? 'صافي أرباح الخزينة وسهام الهوامش' : 'Bénéfice Net Réel'}
                     </span>
                     <span className="font-mono text-sm font-black text-emerald-700">
-                      {totalNetProfit.toLocaleString(undefined, { minimumFractionDigits: 2 })} DH
+                      {totalNetProfit.toLocaleString(undefined, { minimumFractionDigits: 2 })} 
                     </span>
                   </div>
                 </div>
@@ -2011,7 +2011,7 @@ export default function Account({
                       {isRtl ? '🛍️ إجمالي مبيعات المحل :' : 'Ventes globales du magasin :'}
                     </span>
                     <span className="font-mono text-xs font-black text-slate-900">
-                      {totalOverallSales.toLocaleString(undefined, { minimumFractionDigits: 2 })} DH
+                      {totalOverallSales.toLocaleString(undefined, { minimumFractionDigits: 2 })} 
                     </span>
                   </div>
                   {/* Cash Income received */}
@@ -2020,7 +2020,7 @@ export default function Account({
                       <span>💵</span> {isRtl ? 'نقد (مقبض نقدي) :' : 'Espèces de caisse :'}
                     </span>
                     <span className="font-mono text-sm font-extrabold text-emerald-600">
-                      {cumulativeCashSum.toLocaleString(undefined, { minimumFractionDigits: 2 })} DH
+                      {cumulativeCashSum.toLocaleString(undefined, { minimumFractionDigits: 2 })} 
                     </span>
                   </div>
                   {/* Debts outstanding */}
@@ -2029,7 +2029,7 @@ export default function Account({
                       <span>💸</span> {isRtl ? 'سلف (ديون العملاء) :' : 'Dettes clients / Crédit :'}
                     </span>
                     <span className="font-mono text-sm font-extrabold text-rose-600">
-                      {cumulativeDebtSum.toLocaleString(undefined, { minimumFractionDigits: 2 })} DH
+                      {cumulativeDebtSum.toLocaleString(undefined, { minimumFractionDigits: 2 })} 
                     </span>
                   </div>
                   {/* Client checks (postal checks as guarantee) */}
@@ -2038,7 +2038,7 @@ export default function Account({
                       <span>📩</span> {isRtl ? 'شيكات الضمان (المستلمة) :' : 'Chèques de garantie / Effets :'}
                     </span>
                     <span className="font-mono text-sm font-extrabold text-indigo-600">
-                      {cumulativeChecksSum.toLocaleString(undefined, { minimumFractionDigits: 2 })} DH
+                      {cumulativeChecksSum.toLocaleString(undefined, { minimumFractionDigits: 2 })} 
                     </span>
                   </div>
                 </div>
@@ -2058,7 +2058,7 @@ export default function Account({
                       {isRtl ? 'قيمة شراء مخزن السلع الكلي' : 'Valeur d\'Achat (Stock) :'}
                     </span>
                     <span className="font-mono text-sm font-extrabold text-slate-800">
-                      {totalStockWorthBuying.toLocaleString(undefined, { maximumFractionDigits: 1 })} DH
+                      {totalStockWorthBuying.toLocaleString(undefined, { maximumFractionDigits: 1 })} 
                     </span>
                   </div>
                   {/* Estimated Selling worth */}
@@ -2067,7 +2067,7 @@ export default function Account({
                       {isRtl ? 'تقدير بيع مخزن السلع المتوقع' : 'Estimation de Vente (Stock) :'}
                     </span>
                     <span className="font-mono text-sm font-extrabold text-slate-800">
-                      {totalStockWorthSelling.toLocaleString(undefined, { maximumFractionDigits: 1 })} DH
+                      {totalStockWorthSelling.toLocaleString(undefined, { maximumFractionDigits: 1 })} 
                     </span>
                   </div>
                   {/* Potential Stock Profit / Margin in warehouse */}
@@ -2076,7 +2076,7 @@ export default function Account({
                       {isRtl ? 'هامش الربح المتوقع بالمخزن' : 'Profit Latent au Stock :'}
                     </span>
                     <span className="font-mono text-sm font-black text-emerald-400">
-                      +{potentialStockProfit.toLocaleString(undefined, { maximumFractionDigits: 1 })} DH
+                      +{potentialStockProfit.toLocaleString(undefined, { maximumFractionDigits: 1 })} 
                     </span>
                   </div>
                 </div>
@@ -2167,12 +2167,12 @@ export default function Account({
                             <td className="py-3 px-2 text-center font-mono font-bold text-slate-800">
                               {item.qty} {isRtl ? 'وحدات' : 'U'}
                             </td>
-                            <td className="py-3 px-2 text-center font-mono text-gray-400">{item.buyPrice.toFixed(1)} DH</td>
-                            <td className="py-3 px-2 text-center font-mono text-slate-500">{item.sellPrice.toFixed(1)} DH</td>
+                            <td className="py-3 px-2 text-center font-mono text-gray-400">{item.buyPrice.toFixed(1)} </td>
+                            <td className="py-3 px-2 text-center font-mono text-slate-500">{item.sellPrice.toFixed(1)} </td>
                             <td className="py-3 px-2 text-center font-mono">
                               <div className="flex flex-col items-center">
                                 <span className={item.netProfit >= 0 ? "font-extrabold text-emerald-600" : "font-extrabold text-rose-600"}>
-                                  {item.netProfit >= 0 ? '+' : ''}{item.netProfit.toFixed(1)} DH
+                                  {item.netProfit >= 0 ? '+' : ''}{item.netProfit.toFixed(1)} 
                                 </span>
                                 {item.proportionalDiscount > 0 && (
                                   <span className="text-[9px] text-gray-400 font-bold font-mono">
@@ -2184,14 +2184,14 @@ export default function Account({
                             <td className="py-3 px-3 text-center font-mono font-extrabold text-amber-600 bg-amber-50/10">
                               {item.proportionalDiscount > 0 ? (
                                 <span title={isRtl ? 'حصة الخصم التناسبية' : 'Part Remise'}>
-                                  -{item.proportionalDiscount.toFixed(1)} DH
+                                  -{item.proportionalDiscount.toFixed(1)} 
                                 </span>
                               ) : (
                                 <span className="text-gray-300">-</span>
                               )}
                             </td>
                             <td className="py-3 px-3 text-right font-mono font-black text-slate-900 bg-slate-50/20 whitespace-nowrap">
-                              {item.netRevenue.toFixed(2)} DH
+                              {item.netRevenue.toFixed(2)} 
                             </td>
                           </tr>
                         );
@@ -2235,13 +2235,13 @@ export default function Account({
                           <td className="py-3.5 px-3 text-center font-mono font-bold text-slate-800">
                             {pGroup.totalQty} {isRtl ? 'وحدة' : 'U'}
                           </td>
-                          <td className="py-3.5 px-3 text-center font-mono text-gray-400">{pGroup.totalBuyCost.toFixed(2)} DH</td>
+                          <td className="py-3.5 px-3 text-center font-mono text-gray-400">{pGroup.totalBuyCost.toFixed(2)} </td>
                           <td className="py-3.5 px-3 text-center">
                             <div className="flex flex-col items-center">
-                              <span className="font-mono text-slate-600 font-bold">{pGroup.totalSellRevenue.toFixed(2)} DH</span>
+                              <span className="font-mono text-slate-600 font-bold">{pGroup.totalSellRevenue.toFixed(2)} </span>
                               {pGroup.totalDiscount > 0 && (
                                 <span className="text-[10px] text-amber-600 font-semibold font-mono">
-                                  (-{pGroup.totalDiscount.toFixed(2)} DH {isRtl ? 'خصم' : 'Remise'})
+                                  (-{pGroup.totalDiscount.toFixed(2)} {isRtl ? 'خصم' : 'Remise'})
                                 </span>
                               )}
                             </div>
@@ -2249,7 +2249,7 @@ export default function Account({
                           <td className="py-3.5 px-3 text-right bg-emerald-50/5">
                             <div className="flex flex-col items-end">
                               <span className={pGroup.totalProfit >= 0 ? "font-mono font-black text-emerald-600" : "font-mono font-black text-rose-600"}>
-                                {pGroup.totalProfit >= 0 ? '+' : ''}{pGroup.totalProfit.toFixed(2)} DH
+                                {pGroup.totalProfit >= 0 ? '+' : ''}{pGroup.totalProfit.toFixed(2)} 
                               </span>
                             </div>
                           </td>
@@ -2300,13 +2300,13 @@ export default function Account({
                             <td className="py-4 px-4 text-center font-mono font-bold text-slate-800">
                               {cGroup.totalQty} {isRtl ? 'قطعة' : 'Pcs'}
                             </td>
-                            <td className="py-4 px-4 text-center font-mono text-gray-400">{cGroup.totalBuyCost.toFixed(2)} DH</td>
+                            <td className="py-4 px-4 text-center font-mono text-gray-400">{cGroup.totalBuyCost.toFixed(2)} </td>
                             <td className="py-4 px-4 text-center font-mono">
                               <div className="flex flex-col items-center flex-wrap">
-                                <span className="font-mono text-slate-600 font-bold">{cGroup.totalSellRevenue.toFixed(2)} DH</span>
+                                <span className="font-mono text-slate-600 font-bold">{cGroup.totalSellRevenue.toFixed(2)} </span>
                                 {cGroup.totalDiscount > 0 && (
                                   <span className="text-[10px] text-amber-600 font-bold font-mono">
-                                    (-{cGroup.totalDiscount.toFixed(2)} DH {isRtl ? 'خصم' : 'Remise'})
+                                    (-{cGroup.totalDiscount.toFixed(2)} {isRtl ? 'خصم' : 'Remise'})
                                   </span>
                                 )}
                               </div>
@@ -2314,7 +2314,7 @@ export default function Account({
                             <td className="py-4 px-4 text-right font-mono bg-emerald-50/5">
                               <div className="flex flex-col items-end">
                                 <span className={cGroup.totalProfit >= 0 ? "font-black text-emerald-600" : "font-black text-rose-600"}>
-                                  {cGroup.totalProfit >= 0 ? '+' : ''}{cGroup.totalProfit.toFixed(2)} DH
+                                  {cGroup.totalProfit >= 0 ? '+' : ''}{cGroup.totalProfit.toFixed(2)} 
                                 </span>
                                 <span className="text-[10px] text-emerald-500 font-bold">({marginPercent}% {isRtl ? 'عائد' : 'marge'})</span>
                               </div>
@@ -2374,7 +2374,7 @@ export default function Account({
                 <div className="text-center">
                   <span className="text-[10px] text-gray-400 font-extrabold uppercase block">{isRtl ? 'إجمالي العجز المالي' : 'Dépenses Déficit total'}</span>
                   <span className="text-sm font-black text-red-600 font-mono mt-0.5 block">
-                    -{auditAnalysis.deficitValue.toLocaleString(undefined, { minimumFractionDigits: 2 })} DH
+                    -{auditAnalysis.deficitValue.toLocaleString(undefined, { minimumFractionDigits: 2 })} 
                   </span>
                 </div>
                 <div className="text-center border-r sm:border-slate-200 border-none">
@@ -2543,7 +2543,7 @@ export default function Account({
                     </div>
                     <div className="flex justify-between items-center text-xs font-semibold">
                       <span className="text-red-650">{isRtl ? 'إجمالي العجز:' : 'Déficit total:'}</span>
-                      <span className="text-red-600 font-mono font-black">-{selectedAudit.totalDeficitValue.toLocaleString(undefined, { minimumFractionDigits: 2 })} DH</span>
+                      <span className="text-red-600 font-mono font-black">-{selectedAudit.totalDeficitValue.toLocaleString(undefined, { minimumFractionDigits: 2 })} </span>
                     </div>
                   </div>
                 </div>
@@ -2621,15 +2621,15 @@ export default function Account({
                                   {item.diff > 0 ? `+${item.diff}` : item.diff}
                                 </span>
                               </td>
-                              <td className="py-3 px-3 text-center font-mono text-gray-450">{item.buyPrice.toFixed(2)} DH</td>
+                              <td className="py-3 px-3 text-center font-mono text-gray-450">{item.buyPrice.toFixed(2)} </td>
                               <td className="py-3 px-3 text-left font-mono font-black text-red-600">
                                 {isDeficit ? (
                                   <span className="text-red-650 bg-red-50/50 p-1 px-2 rounded border border-red-100">
-                                    -{Math.abs(financialEffect).toFixed(2)} DH ({isRtl ? 'خسارة' : 'Perte'})
+                                    -{Math.abs(financialEffect).toFixed(2)} ({isRtl ? 'خسارة' : 'Perte'})
                                   </span>
                                 ) : (
                                   <span className="text-emerald-650 bg-emerald-50/50 p-1 px-2 rounded border border-emerald-100">
-                                    +{financialEffect.toFixed(2)} DH ({isRtl ? 'أرباح تسوية' : 'Gain'})
+                                    +{financialEffect.toFixed(2)} ({isRtl ? 'أرباح تسوية' : 'Gain'})
                                   </span>
                                 )}
                               </td>
@@ -2707,7 +2707,7 @@ export default function Account({
                 <div className="space-y-3">
                   <div>
                     <label className="block text-[10px] font-black uppercase text-gray-400 mb-1">
-                      {isRtl ? 'القيمة الإجمالية المراد اعتمادها (DH) :' : 'Nouveau Montant Cible (DH) :'}
+                      {isRtl ? 'القيمة الإجمالية المراد اعتمادها :' : 'Nouveau Montant Cible :'}
                     </label>
                     <input
                       type="number"

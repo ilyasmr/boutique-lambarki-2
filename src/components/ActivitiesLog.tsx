@@ -46,19 +46,19 @@ type ActivityType =
   | 'invoice_delete';
 
 const TYPE_META: Record<ActivityType, { icon: React.ElementType; colorClass: string; bgClass: string; labelAr: string; labelFr: string }> = {
-  sale:            { icon: ShoppingCart, colorClass: 'text-emerald-600', bgClass: 'bg-emerald-50 border-emerald-200', labelAr: 'بيع جديد', labelFr: 'Vente' },
-  product_add:     { icon: Plus,         colorClass: 'text-blue-600',    bgClass: 'bg-blue-50 border-blue-200',       labelAr: 'إضافة منتج', labelFr: 'Produit Ajouté' },
-  product_edit:    { icon: Edit,         colorClass: 'text-amber-600',   bgClass: 'bg-amber-50 border-amber-200',     labelAr: 'تعديل منتج', labelFr: 'Produit Modifié' },
-  product_delete:  { icon: Trash2,       colorClass: 'text-rose-600',    bgClass: 'bg-rose-50 border-rose-200',       labelAr: 'حذف منتج', labelFr: 'Produit Supprimé' },
-  client_add:      { icon: Users,        colorClass: 'text-indigo-600',  bgClass: 'bg-indigo-50 border-indigo-200',   labelAr: 'إضافة زبون', labelFr: 'Client Ajouté' },
-  client_edit:     { icon: Edit,         colorClass: 'text-amber-600',   bgClass: 'bg-amber-50 border-amber-200',     labelAr: 'تعديل زبون', labelFr: 'Client Modifié' },
-  client_delete:   { icon: Trash2,       colorClass: 'text-rose-600',    bgClass: 'bg-rose-50 border-rose-200',       labelAr: 'حذف زبون', labelFr: 'Client Supprimé' },
-  stock_edit:      { icon: Boxes,        colorClass: 'text-violet-600',  bgClass: 'bg-violet-50 border-violet-200',   labelAr: 'تعديل مخزون', labelFr: 'Stock Modifié' },
-  withdraw_add:    { icon: ArrowDown,    colorClass: 'text-rose-600',    bgClass: 'bg-rose-50 border-rose-200',       labelAr: 'سحب نقدي', labelFr: 'Retrait Caisse' },
-  withdraw_edit:   { icon: Edit,         colorClass: 'text-amber-600',   bgClass: 'bg-amber-50 border-amber-200',     labelAr: 'تعديل سحب', labelFr: 'Retrait Modifié' },
-  withdraw_delete: { icon: Trash2,       colorClass: 'text-rose-600',    bgClass: 'bg-rose-50 border-rose-200',       labelAr: 'حذف سحب', labelFr: 'Retrait Supprimé' },
-  invoice_edit:    { icon: FileText,     colorClass: 'text-amber-600',   bgClass: 'bg-amber-50 border-amber-200',     labelAr: 'تعديل فاتورة', labelFr: 'Facture Modifiée' },
-  invoice_delete:  { icon: Trash2,       colorClass: 'text-rose-600',    bgClass: 'bg-rose-50 border-rose-200',       labelAr: 'حذف فاتورة', labelFr: 'Facture Supprimée' },
+  sale: { icon: ShoppingCart, colorClass: 'text-emerald-600', bgClass: 'bg-emerald-50 border-emerald-200', labelAr: 'بيع جديد', labelFr: 'Vente' },
+  product_add: { icon: Plus, colorClass: 'text-blue-600', bgClass: 'bg-blue-50 border-blue-200', labelAr: 'إضافة منتج', labelFr: 'Produit Ajouté' },
+  product_edit: { icon: Edit, colorClass: 'text-amber-600', bgClass: 'bg-amber-50 border-amber-200', labelAr: 'تعديل منتج', labelFr: 'Produit Modifié' },
+  product_delete: { icon: Trash2, colorClass: 'text-rose-600', bgClass: 'bg-rose-50 border-rose-200', labelAr: 'حذف منتج', labelFr: 'Produit Supprimé' },
+  client_add: { icon: Users, colorClass: 'text-indigo-600', bgClass: 'bg-indigo-50 border-indigo-200', labelAr: 'إضافة زبون', labelFr: 'Client Ajouté' },
+  client_edit: { icon: Edit, colorClass: 'text-amber-600', bgClass: 'bg-amber-50 border-amber-200', labelAr: 'تعديل زبون', labelFr: 'Client Modifié' },
+  client_delete: { icon: Trash2, colorClass: 'text-rose-600', bgClass: 'bg-rose-50 border-rose-200', labelAr: 'حذف زبون', labelFr: 'Client Supprimé' },
+  stock_edit: { icon: Boxes, colorClass: 'text-violet-600', bgClass: 'bg-violet-50 border-violet-200', labelAr: 'تعديل مخزون', labelFr: 'Stock Modifié' },
+  withdraw_add: { icon: ArrowDown, colorClass: 'text-rose-600', bgClass: 'bg-rose-50 border-rose-200', labelAr: 'سحب نقدي', labelFr: 'Retrait Caisse' },
+  withdraw_edit: { icon: Edit, colorClass: 'text-amber-600', bgClass: 'bg-amber-50 border-amber-200', labelAr: 'تعديل سحب', labelFr: 'Retrait Modifié' },
+  withdraw_delete: { icon: Trash2, colorClass: 'text-rose-600', bgClass: 'bg-rose-50 border-rose-200', labelAr: 'حذف سحب', labelFr: 'Retrait Supprimé' },
+  invoice_edit: { icon: FileText, colorClass: 'text-amber-600', bgClass: 'bg-amber-50 border-amber-200', labelAr: 'تعديل فاتورة', labelFr: 'Facture Modifiée' },
+  invoice_delete: { icon: Trash2, colorClass: 'text-rose-600', bgClass: 'bg-rose-50 border-rose-200', labelAr: 'حذف فاتورة', labelFr: 'Facture Supprimée' },
 };
 
 const FALLBACK_META = { icon: Activity, colorClass: 'text-slate-500', bgClass: 'bg-slate-50 border-slate-200', labelAr: 'نشاط', labelFr: 'Activité' };
@@ -76,18 +76,18 @@ function formatRelativeDate(dateStr: string, lang: 'fr' | 'ar'): string {
   const diffDay = Math.floor(diffHr / 24);
 
   if (lang === 'ar') {
-    if (diffMin < 1)   return 'الآن';
-    if (diffMin < 60)  return `منذ ${diffMin} دقيقة`;
-    if (diffHr < 24)   return `منذ ${diffHr} ساعة`;
-    if (diffDay < 2)   return 'أمس';
-    if (diffDay < 30)  return `منذ ${diffDay} يوماً`;
+    if (diffMin < 1) return 'الآن';
+    if (diffMin < 60) return `منذ ${diffMin} دقيقة`;
+    if (diffHr < 24) return `منذ ${diffHr} ساعة`;
+    if (diffDay < 2) return 'أمس';
+    if (diffDay < 30) return `منذ ${diffDay} يوماً`;
     return date.toLocaleDateString('ar-MA');
   } else {
-    if (diffMin < 1)   return "À l'instant";
-    if (diffMin < 60)  return `Il y a ${diffMin} min`;
-    if (diffHr < 24)   return `Il y a ${diffHr}h`;
-    if (diffDay < 2)   return 'Hier';
-    if (diffDay < 30)  return `Il y a ${diffDay} jours`;
+    if (diffMin < 1) return "À l'instant";
+    if (diffMin < 60) return `Il y a ${diffMin} min`;
+    if (diffHr < 24) return `Il y a ${diffHr}h`;
+    if (diffDay < 2) return 'Hier';
+    if (diffDay < 30) return `Il y a ${diffDay} jours`;
     return date.toLocaleDateString('fr-FR');
   }
 }
@@ -199,7 +199,7 @@ export default function ActivitiesLog({ activities, clients, products, lang, cur
         {[
           { label: isRtl ? 'عدد الزبائن الإجمالي' : 'Total Clients', value: summary.totalClients, icon: Users, color: 'from-blue-500 to-cyan-500' },
           { label: isRtl ? 'عدد المنتجات الإجمالي' : 'Total Produits', value: summary.totalProducts, icon: Package, color: 'from-amber-500 to-orange-500' },
-          { label: isRtl ? 'قيمة ديون قريبة المدى' : 'Dettes à Court Terme', value: `${summary.totalDebts.toFixed(2)} DH`, icon: Activity, color: 'from-emerald-500 to-teal-500' },
+          { label: isRtl ? 'قيمة ديون قريبة المدى' : 'Dettes à Court Terme', value: `${summary.totalDebts.toFixed(2)} `, icon: Activity, color: 'from-emerald-500 to-teal-500' },
           { label: isRtl ? 'قيمة كل الشيكات' : 'Valeur des Chèques', value: `${summary.totalChecks.toFixed(2)} DH`, icon: FileText, color: 'from-indigo-500 to-violet-600' },
         ].map((card, i) => (
           <div key={i} className="bg-white border border-slate-100 rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow">

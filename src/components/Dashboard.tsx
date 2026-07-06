@@ -251,7 +251,7 @@ export default function Dashboard({
           <div className="space-y-1.5 flex-1 min-w-0">
             <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">{t.revenue}</p>
             <h3 className="text-2xl font-black text-slate-900 font-mono tracking-tight truncate">
-              {revenueTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-sm">DH</span>
+              {revenueTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-sm"></span>
             </h3>
             <span className="inline-flex items-center gap-1.5 text-xs text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-md mt-1">
               <TrendingUp className="w-3.5 h-3.5" />
@@ -268,7 +268,7 @@ export default function Dashboard({
           <div className="space-y-1.5 flex-1 min-w-0">
             <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">{t.profit}</p>
             <h3 className="text-2xl font-black text-slate-900 font-mono tracking-tight truncate">
-              {profitTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-sm">DH</span>
+              {profitTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-sm"></span>
             </h3>
             <span className="inline-flex items-center gap-1.5 text-xs text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-md mt-1">
               <TrendingUp className="w-3.5 h-3.5" />
@@ -392,7 +392,7 @@ export default function Dashboard({
                     </div>
                     
                     <div className="text-right">
-                      <span className="text-xxs font-mono text-gray-400">Total: {p.totalRev.toFixed(0)} DH</span>
+                      <span className="text-xxs font-mono text-gray-400">Total: {p.totalRev.toFixed(0)} </span>
                     </div>
                   </div>
                 );
@@ -446,7 +446,7 @@ export default function Dashboard({
                         <td className="py-3.5 px-3 font-mono text-blue-600">{invoice.invoiceNumber}</td>
                         <td className="py-3.5 px-3 text-gray-900 truncate max-w-[120px]">{invoice.clientName}</td>
                         <td className="py-3.5 px-3 text-right font-mono font-bold text-gray-950">
-                          {invoice.total.toFixed(2)} DH
+                          {invoice.total.toFixed(2)} 
                         </td>
                         <td className="py-3.5 px-3 text-center">
                           <button

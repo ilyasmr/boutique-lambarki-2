@@ -64,7 +64,8 @@ export interface Client {
   debtHistory?: DebtHistoryEntry[]; // logs of all debt changes
   hasPostalCheck?: boolean;
   postalChecks?: PostalCheck[]; // Multiple postal checks support
-  pageNumber?: number;
+  pageNumber?: number; // Legacy or default page number
+  notebookPages?: Record<string, number | string>; // Mapping of Notebook ID -> Page Number
   pageHistory?: ClientPageHistory[];
   isPassingClient?: boolean;
 }
