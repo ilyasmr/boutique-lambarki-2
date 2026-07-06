@@ -588,19 +588,21 @@ export default function ProductsList({
                 </div>
               </div>
 
-              {/* Out of stock alert checkbox */}
-              <div className="flex items-center gap-2.5 py-1">
-                <input
-                  type="checkbox"
-                  id="formIsOutOfStock"
-                  checked={formIsOutOfStock}
-                  onChange={(e) => setFormIsOutOfStock(e.target.checked)}
-                  className="w-4 h-4 text-blue-650 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
-                />
-                <label htmlFor="formIsOutOfStock" className="text-xxs text-slate-700 uppercase tracking-wide cursor-pointer font-black select-none">
-                  {isRtl ? 'تنبيه بنفاد السلعة (غير متوفرة حالياً)' : 'Signaler rupture de stock (Indisponible)'}
-                </label>
-              </div>
+              {/* Out of stock alert checkbox — EDIT ONLY, not shown when adding new product */}
+              {editingId && (
+                <div className="flex items-center gap-2.5 py-1">
+                  <input
+                    type="checkbox"
+                    id="formIsOutOfStock"
+                    checked={formIsOutOfStock}
+                    onChange={(e) => setFormIsOutOfStock(e.target.checked)}
+                    className="w-4 h-4 text-blue-650 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
+                  />
+                  <label htmlFor="formIsOutOfStock" className="text-xxs text-rose-700 uppercase tracking-wide cursor-pointer font-black select-none">
+                    {isRtl ? 'تنبيه بنفاد السلعة (غير متوفرة حالياً)' : 'Signaler rupture de stock (Indisponible)'}
+                  </label>
+                </div>
+              )}
 
 
 
