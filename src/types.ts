@@ -137,6 +137,7 @@ export interface AppTranslation {
   debts: string;
   stock: string;
   sales: string;
+  activities: string;
   users: string;
   settings: string;
   logout: string;

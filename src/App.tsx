@@ -34,6 +34,7 @@ import PrintInvoiceModal from './components/PrintInvoiceModal';
 import Account from './components/Account';
 import InvoicesList from './components/InvoicesList';
 import DebtsList from './components/DebtsList';
+import ActivitiesLog from './components/ActivitiesLog';
 
 import { Key, Building, Sparkles, Search, Package, Users, FileText, X, Menu, Eye, EyeOff, Bell, AlertCircle } from 'lucide-react';
 
@@ -894,6 +895,14 @@ export default function App() {
             onBackupImport={handleBackupImport}
             onResetDatabase={handleResetDatabase}
             onResetCashDrawer={handleResetCashDrawer}
+          />
+        );
+      case 'activities':
+        return (
+          <ActivitiesLog
+            activities={activities}
+            lang={lang}
+            currentUser={currentUser}
           />
         );
       default:

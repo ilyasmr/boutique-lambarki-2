@@ -16,6 +16,7 @@ import {
   Building,
   Coins,
   AlertCircle,
+  Activity,
   X
 } from 'lucide-react';
 
@@ -49,10 +50,11 @@ export default function Sidebar({
   const t = translations[lang];
 
   const menuItems = [
-    { id: 'products', label: t.products, icon: ShoppingBasket, roles: ['admin', 'cashier'] },
-    { id: 'clients', label: t.clients, icon: Users, roles: ['admin', 'cashier'] },
-    { id: 'debts', label: t.debts, icon: AlertCircle, roles: ['admin', 'cashier'], badge: alertCount },
-    { id: 'settings', label: t.settings, icon: Settings, roles: ['admin'] },
+    { id: 'products',   label: t.products,   icon: ShoppingBasket, roles: ['admin', 'cashier'] },
+    { id: 'clients',    label: t.clients,    icon: Users,          roles: ['admin', 'cashier'] },
+    { id: 'debts',      label: t.debts,      icon: AlertCircle,    roles: ['admin', 'cashier'], badge: alertCount },
+    { id: 'activities', label: t.activities, icon: Activity,       roles: ['admin'] },
+    { id: 'settings',   label: t.settings,   icon: Settings,       roles: ['admin'] },
   ];
 
   const allowedMenuItems = menuItems.filter(item => item.roles.includes(currentUser.role));
