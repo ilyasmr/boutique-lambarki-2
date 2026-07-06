@@ -12,7 +12,7 @@ const getApiBase = () => {
   }
   
   if (isStandalone) {
-    return 'https://boutique-lambarki-2-69vote5a7-lambarki.vercel.app/api';
+    return 'https://boutique-lambarki-2.vercel.app/api';
   }
   
   return '/api';
