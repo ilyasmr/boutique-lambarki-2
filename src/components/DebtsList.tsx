@@ -329,7 +329,84 @@ export default function DebtsList({
 
       {/* DEBTS TABLE */}
       <div className="flex-1 bg-white rounded-2xl border border-slate-100/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden flex flex-col">
-        <div className="overflow-x-auto flex-1">
+        {/* MOBILE CARDS VIEW */}
+        <div className="md:hidden flex flex-col gap-3 p-4 overflow-y-auto">
+          {filteredDebtors.length === 0 ? (
+            <div className="py-12 text-center text-slate-400">
+              <History className="w-12 h-12 mx-auto text-slate-200 mb-3" />
+              <p className="font-semibold text-sm">{isRtl ? 'لا توجد ديون قريبة المدى مطابقة' : 'Aucune dette correspondante trouvée'}</p>
+            </div>
+          ) : (
+            filteredDebtors.map(c => {
+              const daysLeft = getDaysUntilDue(c.debtDueDate);
+              const isUrgent = daysLeft !== null && daysLeft <= 3;
+              const isOverdue = daysLeft !== null && daysLeft < 0;
+
+              return (
+                <div key={c.id} className="bg-slate-50/50 border border-slate-100 p-4 rounded-xl shadow-sm relative space-y-3">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <p className="font-bold text-slate-900 text-sm">{c.name}</p>
+                      <p className="text-xs text-slate-500 font-mono mt-0.5">{c.phone || (isRtl ? 'بدون رقم' : 'Pas de num')}</p>
+                    </div>
+                    <div className="text-right">
+                      <span className="font-black text-rose-600 text-base font-mono bg-rose-50 px-2 py-1 rounded-lg">
+                        {(c.outstandingDebt || 0).toFixed(2)} DH
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-slate-500 font-mono font-semibold">{isRtl ? 'الإستحقاق:' : 'Échéance:'} {c.debtDueDate || '—'}</span>
+                    {c.debtDueDate && (
+                      isOverdue ? (
+                        <span className="px-1.5 py-0.5 bg-rose-100 text-[10px] text-rose-600 font-black uppercase rounded">{isRtl ? 'متأخر الدفع' : 'En retard'}</span>
+                      ) : isUrgent ? (
+                        <span className="px-1.5 py-0.5 bg-amber-100 text-[10px] text-amber-600 font-black uppercase rounded">{isRtl ? 'قريب جداً' : 'Très proche'}</span>
+                      ) : null
+                    )}
+                  </div>
+                  <div className="flex gap-2 justify-end pt-2 border-t border-slate-100">
+                    <button
+                      onClick={() => {
+                        setSettlingClient(c);
+                        setIsSettleModalOpen(true);
+                      }}
+                      className="flex-1 p-1.5 bg-emerald-50 text-emerald-700 rounded-lg font-bold text-xs transition-colors flex items-center justify-center gap-1.5"
+                    >
+                      <CreditCard className="w-3.5 h-3.5" />
+                      {isRtl ? 'تسديد' : 'Régler'}
+                    </button>
+                    <button
+                      onClick={() => {
+                        setEditingClient(c);
+                        setEditAmount(String(c.outstandingDebt || 0));
+                        setEditDebtDate(c.debtDate || new Date().toISOString().split('T')[0]);
+                        setEditDueDate(c.debtDueDate || new Date().toISOString().split('T')[0]);
+                        setEditDebtNote(c.debtNote || '');
+                        setIsEditModalOpen(true);
+                      }}
+                      className="p-1.5 text-blue-500 bg-blue-50 rounded-lg"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => {
+                        setHistoryClient(c);
+                        setIsHistoryModalOpen(true);
+                      }}
+                      className="p-1.5 text-slate-500 bg-slate-100 rounded-lg"
+                    >
+                      <History className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+
+        {/* DESKTOP TABLE VIEW */}
+        <div className="hidden md:block overflow-x-auto flex-1">
           <table className="w-full text-left">
             <thead>
               <tr className="bg-slate-50 border-b border-slate-100 text-xs font-bold uppercase text-slate-500">
@@ -462,14 +539,14 @@ export default function DebtsList({
       {/* ADD PASSING DEBT MODAL */}
       {isAddModalOpen && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[60] animate-fade-in">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden">
-            <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md max-h-[90vh] flex flex-col overflow-hidden">
+            <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50 shrink-0">
               <h3 className="font-bold text-slate-800">{isRtl ? 'إضافة دين جديد' : 'Ajouter une dette'}</h3>
               <button type="button" onClick={() => setIsAddModalOpen(false)} className="p-1 text-slate-400 hover:bg-slate-200 rounded-lg">
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <form onSubmit={handleAddDebtSubmit} className="p-5 space-y-4 text-sm font-semibold">
+            <form onSubmit={handleAddDebtSubmit} className="p-5 space-y-4 text-sm font-semibold overflow-y-auto flex-1 pb-10">
               <div>
                 <label className="block text-xs text-slate-500 mb-1">{isRtl ? 'الزبون *' : 'Client *'}</label>
                 <select 
@@ -536,14 +613,14 @@ export default function DebtsList({
       {/* SETTLE DEBT MODAL */}
       {isSettleModalOpen && settlingClient && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[60] animate-fade-in">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden">
-            <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm max-h-[90vh] flex flex-col overflow-hidden">
+            <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50 shrink-0">
               <h3 className="font-bold text-slate-800">{isRtl ? 'تسديد الدين' : 'Règlement de dette'}</h3>
               <button onClick={() => setIsSettleModalOpen(false)} className="p-1 text-slate-400 hover:bg-slate-200 rounded-lg">
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <form onSubmit={handleSettleSubmit} className="p-5 space-y-4 text-sm font-semibold">
+            <form onSubmit={handleSettleSubmit} className="p-5 space-y-4 text-sm font-semibold overflow-y-auto flex-1 pb-10">
               <div className="bg-slate-50 p-3 rounded-xl border border-slate-100 flex justify-between items-center">
                 <span className="text-slate-500 text-xs">{isRtl ? 'إجمالي الدين:' : 'Dette totale:'}</span>
                 <span className="font-black font-mono text-rose-600">{(settlingClient.outstandingDebt || 0).toFixed(2)} DH</span>
@@ -571,14 +648,14 @@ export default function DebtsList({
       {/* EDIT DEBT MODAL */}
       {isEditModalOpen && editingClient && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[60] animate-fade-in">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden">
-            <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md max-h-[90vh] flex flex-col overflow-hidden">
+            <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50 shrink-0">
               <h3 className="font-bold text-slate-800">{isRtl ? 'تعديل الدين' : 'Modifier la dette'}</h3>
               <button type="button" onClick={() => { setIsEditModalOpen(false); setEditingClient(null); }} className="p-1 text-slate-400 hover:bg-slate-200 rounded-lg">
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <form onSubmit={handleEditDebtSubmit} className="p-5 space-y-4 text-sm font-semibold">
+            <form onSubmit={handleEditDebtSubmit} className="p-5 space-y-4 text-sm font-semibold overflow-y-auto flex-1 pb-10">
               <div>
                 <label className="block text-xs text-slate-500 mb-1">{isRtl ? 'الزبون' : 'Client'}</label>
                 <input type="text" value={editingClient.name} disabled className="w-full p-2.5 rounded-xl border border-slate-100 bg-slate-50 text-slate-500 outline-none" />

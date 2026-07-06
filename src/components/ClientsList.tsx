@@ -560,7 +560,7 @@ export default function ClientsList({
                 <tr className="bg-gray-50/60 border-b border-gray-100 text-xs font-bold uppercase text-gray-400">
                   <th className="py-3 px-4">{tLabel.newClient}</th>
                   <th className="py-3 px-4">{tLabel.phoneNumber}</th>
-                  <th className="py-3 px-4">{isRtl ? 'العنوان' : 'Adresse'}</th>
+                  <th className="py-3 px-4 hidden md:table-cell">{isRtl ? 'العنوان' : 'Adresse'}</th>
                   {currentUser?.role !== 'cashier' && <th className="py-3 px-4 text-center">{t.actions}</th>}
                 </tr>
               </thead>
@@ -575,23 +575,16 @@ export default function ClientsList({
                   >
                     <td className="py-3.5 px-4 font-bold text-gray-800">
                       <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 font-black text-white flex flex-col items-center justify-center shadow-lg shadow-blue-500/30 shrink-0">
-                          <span className="text-[8px] text-blue-100 opacity-90 uppercase tracking-widest">{isRtl ? 'صفحة' : 'PAGE'}</span>
-                          <span className="text-base font-bold mt-[-2px]">{c.pageNumber || '—'}</span>
+                        <div className="w-10 h-10 rounded-full bg-blue-50 text-blue-600 font-black flex items-center justify-center shrink-0 border border-blue-100">
+                          {c.name.charAt(0).toUpperCase()}
                         </div>
                         <div>
-                          <div className="flex items-center gap-1.5 flex-wrap">
-                            <p className="font-bold text-gray-900">{c.name}</p>
-
-                          </div>
-                          <div className="flex flex-col gap-0.5">
-                            <span className="text-[10px] text-gray-400 font-mono">ID: {getSequentialNumber(c).toString().padStart(3, '0')}</span>
-                          </div>
+                          <p className="font-bold text-gray-900 text-sm">{c.name}</p>
                         </div>
                       </div>
                     </td>
-                    <td className="py-3.5 px-4 font-semibold text-gray-700 font-mono">{c.phone}</td>
-                    <td className="py-3.5 px-4 text-gray-500 font-medium truncate max-w-[150px]" title={c.address}>{c.address}</td>
+                    <td className="py-3.5 px-4 font-semibold text-gray-700 font-mono text-xs">{c.phone || '—'}</td>
+                    <td className="py-3.5 px-4 text-gray-500 font-medium truncate max-w-[150px] hidden md:table-cell text-xs" title={c.address}>{c.address || '—'}</td>
 
                     {currentUser?.role !== 'cashier' && (
                       <td className="py-3.5 px-4 text-center" onClick={(e) => e.stopPropagation()}>
@@ -654,7 +647,14 @@ export default function ClientsList({
                 <span className="text-3xl font-extrabold mt-0">{selectedClient.pageNumber || '—'}</span>
               </div>
               <h2 className="text-md font-extrabold text-gray-900 mt-3">{selectedClient.name}</h2>
-              <p className="text-xxs text-gray-400 font-mono mt-0.5">{isRtl ? 'انضم للمحل بتاريخ:' : 'Inscrit le :'} {selectedClient.joinDate}</p>
+              <div className="flex items-center justify-center gap-2 mt-1">
+                <p className="text-xxs text-gray-400 font-mono">{isRtl ? 'انضم للمحل بتاريخ:' : 'Inscrit le :'} {selectedClient.joinDate}</p>
+                {selectedClient.postalChecks && selectedClient.postalChecks.length > 0 && (
+                  <span className="px-1.5 py-0.5 rounded bg-indigo-100 text-indigo-700 text-[9px] font-black border border-indigo-200">
+                    {selectedClient.postalChecks.length} {isRtl ? 'شيكات' : 'Chèques'}
+                  </span>
+                )}
+              </div>
             </div>
 
             {/* Direct contact info */}
@@ -722,9 +722,38 @@ export default function ClientsList({
                             {status.label}
                           </span>
                         </div>
-                        <div className="flex justify-between items-center text-[9px] text-gray-400 font-mono">
+                        <div className="flex justify-between items-center text-[9px] text-gray-400 font-mono mt-1">
                           <span>{isRtl ? `ت. الإصدار:` : `Émis:`} {chk.entryDate}</span>
                           <span className="font-bold text-gray-500">{isRtl ? `ت. الاستحقاق:` : `Échéance:`} {chk.expiryDate}</span>
+                        </div>
+                        <div className="flex justify-end gap-2 pt-1.5 border-t border-indigo-50 mt-1">
+                          <button 
+                            onClick={() => {
+                              const newAmount = window.prompt(isRtl ? 'أدخل المبلغ الجديد:' : 'Nouveau montant:', String(chk.amount));
+                              if (newAmount && !isNaN(Number(newAmount))) {
+                                const updatedChecks = selectedClient.postalChecks!.map(c => c.id === chk.id ? { ...c, amount: Number(newAmount) } : c);
+                                const updatedClient = { ...selectedClient, postalChecks: updatedChecks };
+                                onEditClient(updatedClient);
+                                setSelectedClient(updatedClient);
+                              }
+                            }}
+                            className="p-1 hover:bg-blue-50 text-blue-500 rounded"
+                          >
+                            <Edit3 className="w-3.5 h-3.5" />
+                          </button>
+                          <button 
+                            onClick={() => {
+                              if (window.confirm(isRtl ? 'تأكيد حذف هذا الشيك؟' : 'Confirmer la suppression du chèque ?')) {
+                                const updatedChecks = selectedClient.postalChecks!.filter(c => c.id !== chk.id);
+                                const updatedClient = { ...selectedClient, postalChecks: updatedChecks };
+                                onEditClient(updatedClient);
+                                setSelectedClient(updatedClient);
+                              }
+                            }}
+                            className="p-1 hover:bg-rose-50 text-rose-500 rounded"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
                         </div>
                       </div>
                     );
