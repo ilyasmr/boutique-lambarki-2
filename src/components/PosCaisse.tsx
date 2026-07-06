@@ -47,7 +47,8 @@ export default function PosCaisse({
   const [selectedClientId, setSelectedClientId] = React.useState('');
   const [discountValue, setDiscountValue] = React.useState(0);
   const [taxPercent, setTaxPercent] = React.useState(0);
-   const [payMethod, setPayMethod] = React.useState<PaymentMethod>('cash');
+  const [mobileGridCols, setMobileGridCols] = React.useState<2 | 4>(2);
+  const [payMethod, setPayMethod] = React.useState<PaymentMethod>('cash');
   const [orderNotes, setOrderNotes] = React.useState('');
   const [paymentStatusSelect, setPaymentStatusSelect] = React.useState<'paid' | 'unpaid' | 'partial'>('paid');
   const [amountPaidUpfront, setAmountPaidUpfront] = React.useState<number>(0);
@@ -346,27 +347,49 @@ export default function PosCaisse({
               </button>
             )}
           </div>
-
-          {/* Quick Categories filter buttons */}
-          <div className="flex gap-2.5 overflow-x-auto pb-1 scrollbar-none">
-            {categories.map((cat) => (
+          
+          {/* View Toggle and Quick Categories filter buttons */}
+          <div className="flex gap-2.5 items-center w-full">
+            <div className="flex gap-1 p-1 bg-slate-100 border border-slate-250 rounded-xl shrink-0">
               <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-2 text-xs font-bold rounded-xl whitespace-nowrap transition-all ${
-                  selectedCategory === cat 
-                    ? 'bg-blue-600 text-white shadow' 
-                    : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
-                }`}
+                type="button"
+                onClick={() => setMobileGridCols(2)}
+                className={`p-1.5 rounded-md transition-all flex items-center justify-center font-bold text-[10px] ${mobileGridCols === 2 ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-400 hover:text-slate-800'}`}
+                title={isRtl ? 'عرض منتجين' : 'Afficher 2'}
               >
-                {cat === 'all' ? (isRtl ? 'جميع الأقسام' : 'Toutes Catégories') : cat}
+                <span className="px-1">2</span>
               </button>
-            ))}
+              <button
+                type="button"
+                onClick={() => setMobileGridCols(4)}
+                className={`p-1.5 rounded-md transition-all flex items-center justify-center font-bold text-[10px] ${mobileGridCols === 4 ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-400 hover:text-slate-800'}`}
+                title={isRtl ? 'عرض 4 منتجات' : 'Afficher 4'}
+              >
+                <Grid className="w-3.5 h-3.5" />
+                <span className="px-1">4</span>
+              </button>
+            </div>
+            
+            <div className="flex gap-2.5 overflow-x-auto pb-1 scrollbar-none flex-1">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`px-4 py-2 text-xs font-bold rounded-xl whitespace-nowrap transition-all ${
+                    selectedCategory === cat 
+                      ? 'bg-blue-600 text-white shadow' 
+                      : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  {cat === 'all' ? (isRtl ? 'جميع الأقسام' : 'Toutes Catégories') : cat}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
         {/* Dynamic Interactive Grid of products */}
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3.5 overflow-y-auto max-h-[58vh] pr-1">
+        <div className={`grid gap-3.5 overflow-y-auto max-h-[58vh] pr-1 ${mobileGridCols === 4 ? 'grid-cols-4 lg:grid-cols-4' : 'grid-cols-2 lg:grid-cols-3'}`}>
           {filteredProducts.map((p) => {
             const isLowStock = p.stock <= p.minStockAlert;
             return (
@@ -381,23 +404,23 @@ export default function PosCaisse({
               >
                 <div>
                   {/* Product Header with category badge */}
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="px-2 py-0.5 text-[9px] font-bold rounded shadow-sm bg-slate-900/80 text-white">
+                  <div className={`flex items-center justify-between ${mobileGridCols === 4 ? 'flex-col items-start gap-1 mb-1' : 'mb-3'}`}>
+                    <span className={`px-2 py-0.5 text-[9px] font-bold rounded shadow-sm bg-slate-900/80 text-white ${mobileGridCols === 4 ? 'text-[7px] px-1' : ''}`}>
                       {p.category}
                     </span>
-                    <span className="text-[9px] font-mono text-slate-400 font-bold">{p.sku}</span>
+                    <span className={`text-[9px] font-mono text-slate-400 font-bold ${mobileGridCols === 4 ? 'hidden' : ''}`}>{p.sku}</span>
                   </div>
 
                   {/* Product name */}
                   <div className="space-y-1">
-                    <h4 className="font-extrabold text-xs sm:text-sm text-gray-900 leading-snug line-clamp-2 group-hover:text-blue-600 transition-colors">{p.name}</h4>
+                    <h4 className={`font-extrabold text-gray-900 leading-snug line-clamp-2 group-hover:text-blue-600 transition-colors ${mobileGridCols === 4 ? 'text-[9px] sm:text-[10px]' : 'text-xs sm:text-sm'}`}>{p.name}</h4>
                   </div>
                 </div>
 
-                <div className="mt-3 pt-2.5 border-t border-gray-100 space-y-2">
+                <div className={`mt-3 pt-2.5 border-t border-gray-100 ${mobileGridCols === 4 ? 'space-y-1' : 'space-y-2'}`}>
                   {/* Stock Status Tag */}
-                  <div className="flex items-center justify-between text-[11px]">
-                    <span className="text-slate-500 font-bold">{isRtl ? 'الحالة :' : 'Statut :'}</span>
+                  <div className={`flex items-center justify-between ${mobileGridCols === 4 ? 'text-[8px] flex-col items-start' : 'text-[11px]'}`}>
+                    <span className={`text-slate-500 font-bold ${mobileGridCols === 4 ? 'hidden' : ''}`}>{isRtl ? 'الحالة :' : 'Statut :'}</span>
                     
                     {p.isOutOfStock ? (
                       <span className="px-2 py-0.5 bg-rose-100 text-rose-800 text-[9px] font-black uppercase rounded shadow-xs border border-rose-200">
@@ -411,9 +434,9 @@ export default function PosCaisse({
                   </div>
 
                   {/* Pricing displays ONLY Sale Price to avoid sensitive buy prices */}
-                  <div className="flex items-center justify-between bg-slate-50/70 p-2 rounded-lg border border-slate-100">
-                    <span className="text-[10px] text-slate-500 font-bold uppercase">{isRtl ? 'ثمن البيع :' : 'Prix Vente :'}</span>
-                    <span className="font-mono text-xs sm:text-sm font-black text-blue-900">{(p.sellPrice || 0).toFixed(2)} DH</span>
+                  <div className={`flex items-center justify-between bg-slate-50 p-2 rounded-lg ${mobileGridCols === 4 ? 'flex-col items-start p-1' : ''}`}>
+                    <span className={`text-[10px] text-slate-500 font-bold uppercase ${mobileGridCols === 4 ? 'hidden' : ''}`}>{isRtl ? 'السعر' : 'Prix'}</span>
+                    <span className={`font-black text-blue-700 font-mono ${mobileGridCols === 4 ? 'text-[10px]' : 'text-xs'}`}>{(p.sellPrice || 0).toFixed(2)} DH</span>
                   </div>
                 </div>
 

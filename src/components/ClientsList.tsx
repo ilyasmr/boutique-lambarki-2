@@ -580,6 +580,12 @@ export default function ClientsList({
                         </div>
                         <div>
                           <p className="font-bold text-gray-900 text-sm">{c.name}</p>
+                          {c.postalChecks && c.postalChecks.length > 0 && (
+                            <span className="inline-flex items-center gap-1 mt-0.5 px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600 text-[10px] font-bold border border-indigo-100">
+                              <span className="w-1 h-1 rounded-full bg-indigo-500 animate-pulse"></span>
+                              {c.postalChecks.length} {isRtl ? 'شيكات' : 'Chèques'}
+                            </span>
+                          )}
                         </div>
                       </div>
                     </td>
