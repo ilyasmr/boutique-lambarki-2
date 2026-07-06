@@ -818,7 +818,7 @@ export default function ClientsList({
 
       {/* COMPONENT MODAL: CREATE / EDIT CRM CARD */}
       {isOpenModal && (
-        <div className="fixed inset-0 bg-neutral-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-neutral-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[60]">
           <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] flex flex-col overflow-hidden">
             
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-gray-50 rounded-t-2xl shrink-0">
@@ -905,7 +905,7 @@ export default function ClientsList({
 
       {/* COMPONENT MODAL: SETTLE DEBT */}
       {isOpenSettleModal && selectedClient && (
-        <div className="fixed inset-0 bg-neutral-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-neutral-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[60]">
           <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] flex flex-col overflow-hidden">
             
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-gray-50 rounded-t-2xl shrink-0">
@@ -991,7 +991,7 @@ export default function ClientsList({
 
       {/* COMPONENT MODAL: CONFIRM CLIENT DELETION */}
       {clientToDelete && (
-        <div className="fixed inset-0 bg-neutral-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-neutral-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[60]">
           <div className="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 space-y-4">
             <div className="flex flex-col items-center text-center space-y-2">
               <div className="p-3 bg-rose-50 rounded-full text-rose-600">

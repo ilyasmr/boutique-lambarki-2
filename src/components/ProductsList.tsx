@@ -492,7 +492,7 @@ export default function ProductsList({
 
       {/* MODAL: ADD / EDIT CARD FORM */}
       {isOpenModal && (
-        <div className="fixed inset-0 bg-neutral-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-neutral-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[60]">
           <div className="bg-white rounded-2xl shadow-2xl max-w-xl w-full flex flex-col max-h-[90vh]">
             
             <div className="flex items-center justify-between px-6 py-4.5 border-b border-gray-100 bg-gray-50 rounded-t-2xl">
@@ -631,7 +631,7 @@ export default function ProductsList({
 
       {/* Manage Rayons Modal */}
       {isManageModalOpen && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-fade-in" dir={isRtl ? 'rtl' : 'ltr'}>
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-[60] animate-fade-in" dir={isRtl ? 'rtl' : 'ltr'}>
           <div className="bg-white rounded-2xl border border-slate-100 shadow-2xl max-w-md w-full overflow-hidden transform scale-100 transition-all">
             {/* Modal Header */}
             <div className="bg-slate-50 border-b border-slate-100 p-5 flex items-center justify-between">

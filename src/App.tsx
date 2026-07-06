@@ -1425,7 +1425,7 @@ export default function App() {
 
             {/* Profile Detail */}
             <div className="flex items-center gap-3">
-              <div className={`${isRtl ? 'text-left' : 'text-right'}`}>
+              <div className={`hidden sm:block ${isRtl ? 'text-left' : 'text-right'}`}>
                 <div className="text-xs font-bold text-slate-900">{currentUser ? resolveUserName(currentUser.name, lang) : ''}</div>
                 <div className="text-[10px] text-slate-500 font-semibold">{currentUser ? getRoleLabel(currentUser.role) : ''}</div>
               </div>
