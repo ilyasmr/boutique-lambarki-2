@@ -52,7 +52,7 @@ export default function App() {
   const isRtl = lang === 'ar';
   
   // Tab controller
-  const [activeTab, setActiveTab ] = React.useState<string>('products');
+  const [activeTab, setActiveTab ] = React.useState<string>('activities');
 
   // Mobile responsive sidebar drawer open status
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
