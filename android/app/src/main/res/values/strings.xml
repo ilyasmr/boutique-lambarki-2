@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Boutique Lambarki 2</string>
-    <string name="title_activity_main">Boutique Lambarki 2</string>
+    <string name="app_name">محل المباركي 2</string>
+    <string name="title_activity_main">محل المباركي 2</string>
     <string name="package_name">lambarki.boutique2.erp</string>
     <string name="custom_url_scheme">lambarki.boutique2.erp</string>
 </resources>
