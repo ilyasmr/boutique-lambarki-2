@@ -901,6 +901,8 @@ export default function App() {
         return (
           <ActivitiesLog
             activities={activities}
+            clients={clients}
+            products={products}
             lang={lang}
             currentUser={currentUser}
           />

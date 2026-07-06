@@ -579,17 +579,30 @@ export default function ClientsList({
                           {c.name.charAt(0).toUpperCase()}
                         </div>
                         <div>
-                          <p className="font-bold text-gray-900 text-sm">{c.name}</p>
-                          {c.postalChecks && c.postalChecks.length > 0 && (
-                            <span className="inline-flex items-center gap-1 mt-0.5 px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600 text-[10px] font-bold border border-indigo-100">
-                              <span className="w-1 h-1 rounded-full bg-indigo-500 animate-pulse"></span>
-                              {c.postalChecks.length} {isRtl ? 'شيكات' : 'Chèques'}
-                            </span>
-                          )}
+                          <p className="font-bold text-gray-900 text-sm">{c.name.split(' ').slice(0, 2).join(' ')}</p>
+                          <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
+                            {c.pageNumber && (
+                              <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 text-[10px] font-bold border border-slate-200 shadow-sm">
+                                {isRtl ? 'صفحة:' : 'Page:'} {c.pageNumber}
+                              </span>
+                            )}
+                            {c.postalChecks && c.postalChecks.length > 0 && (
+                              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600 text-[10px] font-bold border border-indigo-100 shadow-sm">
+                                <span className="w-1 h-1 rounded-full bg-indigo-500 animate-pulse"></span>
+                                {c.postalChecks.length} {isRtl ? 'شيكات' : 'Chèques'}
+                              </span>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </td>
-                    <td className="py-3.5 px-4 font-semibold text-gray-700 font-mono text-xs">{c.phone || '—'}</td>
+                    <td className="py-3.5 px-4 font-semibold text-gray-700 font-mono text-xs">
+                      {c.phone ? (
+                        <a href={`tel:${c.phone}`} onClick={(e) => e.stopPropagation()} className="text-blue-600 hover:text-blue-800 hover:underline">
+                          {c.phone}
+                        </a>
+                      ) : '—'}
+                    </td>
                     <td className="py-3.5 px-4 text-gray-500 font-medium truncate max-w-[150px] hidden md:table-cell text-xs" title={c.address}>{c.address || '—'}</td>
 
                     {currentUser?.role !== 'cashier' && (

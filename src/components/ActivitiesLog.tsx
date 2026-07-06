@@ -24,6 +24,8 @@ import {
 
 interface ActivitiesLogProps {
   activities: SystemActivity[];
+  clients: any[];
+  products: any[];
   lang: 'fr' | 'ar';
   currentUser: { name: string; role: string };
 }
@@ -111,7 +113,7 @@ function formatDayLabel(dayKey: string, lang: 'fr' | 'ar'): string {
     : d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
 }
 
-export default function ActivitiesLog({ activities, lang, currentUser }: ActivitiesLogProps) {
+export default function ActivitiesLog({ activities, clients, products, lang, currentUser }: ActivitiesLogProps) {
   const isRtl = lang === 'ar';
 
   const [search, setSearch] = React.useState('');
@@ -148,15 +150,13 @@ export default function ActivitiesLog({ activities, lang, currentUser }: Activit
 
   // Summary counters for this month
   const summary = React.useMemo(() => {
-    const month = activities.filter(a => new Date(a.date) >= oneMonthAgo);
     return {
-      total: month.length,
-      sales: month.filter(a => a.type === 'sale').length,
-      products: month.filter(a => a.type?.startsWith('product')).length,
-      clients: month.filter(a => a.type?.startsWith('client')).length,
-      stock: month.filter(a => a.type === 'stock_edit').length,
+      totalProducts: products.length,
+      totalClients: clients.length,
+      totalDebts: clients.reduce((sum, c) => sum + (c.outstandingDebt || 0), 0),
+      totalChecks: clients.reduce((sum, c) => sum + (c.postalChecks?.reduce((s: number, chk: any) => s + chk.amount, 0) || 0), 0),
     };
-  }, [activities]);
+  }, [clients, products]);
 
   const typeOptions: { value: string; labelAr: string; labelFr: string }[] = [
     { value: 'all', labelAr: 'جميع الأنشطة', labelFr: 'Tous les Événements' },
@@ -197,10 +197,10 @@ export default function ActivitiesLog({ activities, lang, currentUser }: Activit
       {/* Summary Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
-          { label: isRtl ? 'إجمالي الأحداث' : 'Total Événements', value: summary.total, icon: Activity,      color: 'from-indigo-500 to-violet-600' },
-          { label: isRtl ? 'عمليات البيع'    : 'Ventes Effectuées', value: summary.sales,    icon: ShoppingCart, color: 'from-emerald-500 to-teal-600' },
-          { label: isRtl ? 'تغييرات المنتجات' : 'Modifications Produits', value: summary.products, icon: Package, color: 'from-blue-500 to-indigo-600' },
-          { label: isRtl ? 'تغييرات الزبائن' : 'Modifications Clients',  value: summary.clients,  icon: Users,   color: 'from-amber-500 to-orange-600' },
+          { label: isRtl ? 'عدد الزبائن الإجمالي' : 'Total Clients', value: summary.totalClients, icon: Users, color: 'from-blue-500 to-cyan-500' },
+          { label: isRtl ? 'عدد المنتجات الإجمالي' : 'Total Produits', value: summary.totalProducts, icon: Package, color: 'from-amber-500 to-orange-500' },
+          { label: isRtl ? 'قيمة ديون قريبة المدى' : 'Dettes à Court Terme', value: `${summary.totalDebts.toFixed(2)} DH`, icon: Activity, color: 'from-emerald-500 to-teal-500' },
+          { label: isRtl ? 'قيمة كل الشيكات' : 'Valeur des Chèques', value: `${summary.totalChecks.toFixed(2)} DH`, icon: FileText, color: 'from-indigo-500 to-violet-600' },
         ].map((card, i) => (
           <div key={i} className="bg-white border border-slate-100 rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-3">
