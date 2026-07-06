@@ -1155,7 +1155,7 @@ export default function App() {
         alertCount={alerts.length}
       />
 
-      {/* Modern Translucent Mobile Backdrop Overlay */}
+      {/* Mobile Bottom Nav Overlay backdrop (when sidebar opens) */}
       {isSidebarOpen && (
         <div 
           onClick={() => setIsSidebarOpen(false)}
@@ -1168,14 +1168,14 @@ export default function App() {
         
         {/* Top Header matching Professional Polish theme precisely and optimized for Mobile */}
         <header className="h-16 bg-white/70 backdrop-blur-md border-b border-white/40 shadow-[0_4px_30px_rgb(0,0,0,0.02)] flex items-center justify-between px-4 sm:px-8 no-print shrink-0 z-30" dir={isRtl ? 'rtl' : 'ltr'}>
-          {/* Universal Sidebar Toggle Button */}
+          {/* Universal Sidebar Toggle Button — Desktop only */}
           <button
             type="button"
             onClick={() => {
               setIsMenuHidden(prev => !prev);
               setIsSidebarOpen(prev => !prev);
             }}
-            className="p-2 text-slate-600 hover:text-emerald-700 hover:bg-emerald-50 border border-slate-200 rounded-xl transition-all duration-150 shrink-0 cursor-pointer flex items-center justify-center gap-1.5 active:scale-95 bg-white font-black"
+            className="hidden lg:flex p-2 text-slate-600 hover:text-emerald-700 hover:bg-emerald-50 border border-slate-200 rounded-xl transition-all duration-150 shrink-0 cursor-pointer items-center justify-center gap-1.5 active:scale-95 bg-white font-black"
             title={isRtl ? "إخفاء/إظهار القائمة" : "Afficher/Cacher le menu"}
           >
             <Menu className="w-5 h-5 text-emerald-600" />
@@ -1186,6 +1186,11 @@ export default function App() {
               }
             </span>
           </button>
+
+          {/* Mobile: App brand name instead of toggle */}
+          <div className="lg:hidden flex items-center gap-2">
+            <span className="text-base font-bold text-emerald-700" style={{ fontFamily: 'Amiri, serif' }}>محل المباركي 2</span>
+          </div>
 
           <div className="relative flex items-center gap-2 sm:gap-4 w-[60%] lg:w-[65%] xl:w-[70%] z-50">
             {/* Search Box taking exactly 75% of parent container */}
@@ -1433,11 +1438,104 @@ export default function App() {
 
         {/* Scrollable Main Content Router */}
         <main 
-          className="flex-1 p-4 sm:p-8 overflow-y-auto max-w-full bg-slate-50"
+          className="flex-1 p-3 sm:p-8 overflow-y-auto max-w-full bg-slate-50 pb-24 lg:pb-8"
           dir={isRtl ? 'rtl' : 'ltr'}
         >
           {renderTabContent()}
         </main>
+
+        {/* ── Mobile Bottom Navigation Bar ── */}
+        <nav
+          className="lg:hidden fixed bottom-0 left-0 right-0 z-50 no-print"
+          dir={isRtl ? 'rtl' : 'ltr'}
+          style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+        >
+          {/* Glassmorphism pill container */}
+          <div className="mx-3 mb-3 bg-white/95 backdrop-blur-xl border border-slate-200/80 rounded-2xl shadow-[0_-4px_30px_rgba(0,0,0,0.10)] px-2 py-1.5">
+            <div className="flex items-center justify-around">
+              {/* Products */}
+              <button
+                type="button"
+                onClick={() => { handleSidebarTabSelect('products'); }}
+                className={`flex flex-col items-center gap-0.5 px-3 py-2 rounded-xl transition-all duration-200 min-w-[56px] ${
+                  activeTab === 'products'
+                    ? 'bg-blue-600 text-white shadow-md shadow-blue-500/30 scale-105'
+                    : 'text-slate-400 hover:text-slate-700 hover:bg-slate-100'
+                }`}
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                <span className="text-[9px] font-black tracking-wide">{isRtl ? 'السلع' : 'Produits'}</span>
+              </button>
+
+              {/* Clients */}
+              <button
+                type="button"
+                onClick={() => { handleSidebarTabSelect('clients'); }}
+                className={`flex flex-col items-center gap-0.5 px-3 py-2 rounded-xl transition-all duration-200 min-w-[56px] ${
+                  activeTab === 'clients'
+                    ? 'bg-blue-600 text-white shadow-md shadow-blue-500/30 scale-105'
+                    : 'text-slate-400 hover:text-slate-700 hover:bg-slate-100'
+                }`}
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span className="text-[9px] font-black tracking-wide">{isRtl ? 'الزبائن' : 'Clients'}</span>
+              </button>
+
+              {/* POS center big button */}
+              <button
+                type="button"
+                onClick={() => { handleSidebarTabSelect('pos'); }}
+                className={`flex flex-col items-center gap-0.5 -mt-4 px-4 py-3 rounded-2xl shadow-lg transition-all duration-200 min-w-[64px] ${
+                  activeTab === 'pos'
+                    ? 'bg-emerald-600 text-white shadow-emerald-500/40 scale-110'
+                    : 'bg-gradient-to-br from-emerald-500 to-emerald-700 text-white shadow-emerald-500/30'
+                }`}
+              >
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                <span className="text-[9px] font-black tracking-wide">{isRtl ? 'البيع' : 'Vente'}</span>
+              </button>
+
+              {/* Debts */}
+              <button
+                type="button"
+                onClick={() => { handleSidebarTabSelect('debts'); }}
+                className={`flex flex-col items-center gap-0.5 px-3 py-2 rounded-xl transition-all duration-200 min-w-[56px] relative ${
+                  activeTab === 'debts'
+                    ? 'bg-blue-600 text-white shadow-md shadow-blue-500/30 scale-105'
+                    : 'text-slate-400 hover:text-slate-700 hover:bg-slate-100'
+                }`}
+              >
+                {alerts.length > 0 && (
+                  <span className="absolute top-1 right-2 w-4 h-4 bg-rose-600 text-white rounded-full text-[8px] font-black flex items-center justify-center">
+                    {alerts.length}
+                  </span>
+                )}
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span className="text-[9px] font-black tracking-wide">{isRtl ? 'الديون' : 'Dettes'}</span>
+              </button>
+
+              {/* Settings / More */}
+              <button
+                type="button"
+                onClick={() => setIsSidebarOpen(true)}
+                className={`flex flex-col items-center gap-0.5 px-3 py-2 rounded-xl transition-all duration-200 min-w-[56px] text-slate-400 hover:text-slate-700 hover:bg-slate-100`}
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+                <span className="text-[9px] font-black tracking-wide">{isRtl ? 'المزيد' : 'Plus'}</span>
+              </button>
+            </div>
+          </div>
+        </nav>
         
       </div>
 
