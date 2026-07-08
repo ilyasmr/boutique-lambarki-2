@@ -21,7 +21,8 @@ async function setupDatabase() {
         role TEXT NOT NULL DEFAULT 'cashier',
         email TEXT,
         active BOOLEAN DEFAULT true,
-        password TEXT
+        password TEXT,
+        version INTEGER DEFAULT 1
       );
 
       CREATE TABLE IF NOT EXISTS clients (
@@ -38,7 +39,8 @@ async function setupDatabase() {
         debt_payments JSONB DEFAULT '[]',
         has_postal_check BOOLEAN DEFAULT false,
         postal_checks JSONB DEFAULT '[]',
-        purchases JSONB DEFAULT '[]'
+        purchases JSONB DEFAULT '[]',
+        version INTEGER DEFAULT 1
       );
 
       CREATE TABLE IF NOT EXISTS products (
@@ -51,7 +53,8 @@ async function setupDatabase() {
         stock INTEGER DEFAULT 0,
         min_stock_alert INTEGER DEFAULT 5,
         description TEXT,
-        image TEXT DEFAULT ''
+        image TEXT DEFAULT '',
+        version INTEGER DEFAULT 1
       );
 
       CREATE TABLE IF NOT EXISTS invoices (
@@ -73,7 +76,8 @@ async function setupDatabase() {
         amount_paid NUMERIC DEFAULT 0,
         amount_due NUMERIC DEFAULT 0,
         notes TEXT,
-        cashier_name TEXT
+        cashier_name TEXT,
+        version INTEGER DEFAULT 1
       );
 
       CREATE TABLE IF NOT EXISTS stock_movements (

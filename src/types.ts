@@ -8,6 +8,7 @@ export interface User {
   email: string;
   active: boolean;
   password?: string;
+  version?: number;
 }
 
 export interface PurchaseRecord {
@@ -68,6 +69,7 @@ export interface Client {
   notebookPages?: Record<string, number | string>; // Mapping of Notebook ID -> Page Number
   pageHistory?: ClientPageHistory[];
   isPassingClient?: boolean;
+  version?: number;
 }
 
 export interface Product {
@@ -82,6 +84,7 @@ export interface Product {
   description: string;
   image: string; // URL, Base64, or visual placeholder representation
   isOutOfStock?: boolean;
+  version?: number;
 }
 
 export interface StockMovement {
@@ -127,6 +130,7 @@ export interface Invoice {
   amountDue?: number;
   notes?: string;
   cashierName: string;
+  version?: number;
 }
 
 export interface AppTranslation {

@@ -13,7 +13,8 @@ export async function getClients(req, res) {
       postalChecks: r.postal_checks || [],
       purchases: r.purchases || [],
       pageNumber: parseInt(r.page_number || 0),
-      pageHistory: r.page_history || []
+      pageHistory: r.page_history || [],
+      version: parseInt(r.version || 1)
     }));
     res.json(clients);
   } catch (err) {
@@ -40,12 +41,19 @@ export async function createClient(req, res) {
 
 export async function updateClient(req, res) {
   const { id } = req.params;
-  const { name, email, phone, address, joinDate, totalSpent, outstandingDebt, debtDate, debtDueDate, debtPayments, hasPostalCheck, postalChecks, purchases, pageNumber, pageHistory } = req.body;
+  const { name, email, phone, address, joinDate, totalSpent, outstandingDebt, debtDate, debtDueDate, debtPayments, hasPostalCheck, postalChecks, purchases, pageNumber, pageHistory, version } = req.body;
   try {
+    if (version !== undefined) {
+      const current = await pool.query('SELECT version FROM clients WHERE id=$1', [id]);
+      if (current.rows.length > 0 && current.rows[0].version !== null && current.rows[0].version > version) {
+        return res.status(409).json({ error: 'Conflict: Client modified by another user.' });
+      }
+    }
+
     const result = await pool.query(
       `UPDATE clients SET name=$1, email=$2, phone=$3, address=$4, join_date=$5, total_spent=$6,
        outstanding_debt=$7, debt_date=$8, debt_due_date=$9, debt_payments=$10,
-       has_postal_check=$11, postal_checks=$12, purchases=$13, page_number=$14, page_history=$15 WHERE id=$16 RETURNING *`,
+       has_postal_check=$11, postal_checks=$12, purchases=$13, page_number=$14, page_history=$15, version=COALESCE(version, 1) + 1 WHERE id=$16 RETURNING *`,
       [name, email, phone, address, joinDate, totalSpent || 0, outstandingDebt || 0,
        debtDate || null, debtDueDate || null, JSON.stringify(debtPayments || []),
        hasPostalCheck || false, JSON.stringify(postalChecks || []), JSON.stringify(purchases || []),

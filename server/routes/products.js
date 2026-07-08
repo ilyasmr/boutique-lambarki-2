@@ -14,7 +14,8 @@ export async function getProducts(req, res) {
       stock: parseInt(r.stock || 0),
       minStockAlert: parseInt(r.min_stock_alert || 0),
       description: r.description || '',
-      image: r.image || ''
+      image: r.image || '',
+      version: parseInt(r.version || 1)
     }));
     res.json(products);
   } catch (err) {
@@ -42,7 +43,8 @@ export async function createProduct(req, res) {
       stock: parseInt(r.stock || 0),
       minStockAlert: parseInt(r.min_stock_alert || 0),
       description: r.description || '',
-      image: r.image || ''
+      image: r.image || '',
+      version: parseInt(r.version || 1)
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -52,11 +54,18 @@ export async function createProduct(req, res) {
 // PUT update product
 export async function updateProduct(req, res) {
   const { id } = req.params;
-  const { name, sku, buyPrice, sellPrice, category, stock, minStockAlert, description, image } = req.body;
+  const { name, sku, buyPrice, sellPrice, category, stock, minStockAlert, description, image, version } = req.body;
   try {
+    if (version !== undefined) {
+      const current = await pool.query('SELECT version FROM products WHERE id=$1', [id]);
+      if (current.rows.length > 0 && current.rows[0].version !== null && current.rows[0].version > version) {
+        return res.status(409).json({ error: 'Conflict: Product modified by another user.' });
+      }
+    }
+
     const result = await pool.query(
       `UPDATE products SET name=$1, sku=$2, buy_price=$3, sell_price=$4, category=$5, stock=$6,
-       min_stock_alert=$7, description=$8, image=$9 WHERE id=$10 RETURNING *`,
+       min_stock_alert=$7, description=$8, image=$9, version=COALESCE(version, 1) + 1 WHERE id=$10 RETURNING *`,
       [name, sku, buyPrice, sellPrice, category, stock, minStockAlert, description, image || '', id]
     );
     const r = result.rows[0];

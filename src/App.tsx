@@ -157,6 +157,15 @@ export default function App() {
           if (isNetworkError) {
             break;
           } else {
+            if (err.message?.includes('Conflict') || err.status === 409) {
+              alert(
+                lang === 'ar'
+                  ? '⚠️ تم تعديل هذه البيانات للتو من طرف مستخدم آخر. سيتم إعادة تحميل الصفحة وعرض التعديلات الأحدث تجنباً لضياع البيانات.'
+                  : '⚠️ Ces données viennent d\'être modifiées par un autre utilisateur. La page sera actualisée pour éviter toute perte de données.'
+              );
+              window.location.reload();
+              break;
+            }
             updatedQueue.shift();
             setSyncQueue([...updatedQueue]);
             localStorage.setItem('sync_queue', JSON.stringify(updatedQueue));

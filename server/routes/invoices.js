@@ -10,7 +10,8 @@ export async function getInvoices(req, res) {
       discount: parseFloat(r.discount), total: parseFloat(r.total), profit: parseFloat(r.profit),
       date: r.date, status: r.status, paymentMethod: r.payment_method,
       paymentStatus: r.payment_status, amountPaid: parseFloat(r.amount_paid || 0),
-      amountDue: parseFloat(r.amount_due || 0), notes: r.notes, cashierName: r.cashier_name
+      amountDue: parseFloat(r.amount_due || 0), notes: r.notes, cashierName: r.cashier_name,
+      version: parseInt(r.version || 1)
     }));
     res.json(invoices);
   } catch (err) {
@@ -37,12 +38,18 @@ export async function createInvoice(req, res) {
 
 export async function updateInvoice(req, res) {
   const { id } = req.params;
-  const { invoiceNumber, clientName, clientId, clientPhone, items, subtotal, tax, discount, total, profit, date, status, paymentMethod, paymentStatus, amountPaid, amountDue, notes, cashierName } = req.body;
+  const { invoiceNumber, clientName, clientId, clientPhone, items, subtotal, tax, discount, total, profit, date, status, paymentMethod, paymentStatus, amountPaid, amountDue, notes, cashierName, version } = req.body;
   try {
+    if (version !== undefined) {
+      const current = await pool.query('SELECT version FROM invoices WHERE id=$1', [id]);
+      if (current.rows.length > 0 && current.rows[0].version !== null && current.rows[0].version > version) {
+        return res.status(409).json({ error: 'Conflict: Invoice modified by another user.' });
+      }
+    }
     const result = await pool.query(
       `UPDATE invoices SET invoice_number=$1, client_name=$2, client_id=$3, client_phone=$4, items=$5,
        subtotal=$6, tax=$7, discount=$8, total=$9, profit=$10, date=$11, status=$12,
-       payment_method=$13, payment_status=$14, amount_paid=$15, amount_due=$16, notes=$17, cashier_name=$18
+       payment_method=$13, payment_status=$14, amount_paid=$15, amount_due=$16, notes=$17, cashier_name=$18, version=COALESCE(version, 1) + 1
        WHERE id=$19 RETURNING *`,
       [invoiceNumber, clientName, clientId || null, clientPhone || null, JSON.stringify(items || []),
        subtotal, tax, discount, total, profit, date, status, paymentMethod,
