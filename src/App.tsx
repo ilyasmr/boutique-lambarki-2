@@ -95,6 +95,7 @@ export default function App() {
   const [prefilledProductSearch, setPrefilledProductSearch] = React.useState('');
   const [prefilledClientSearch, setPrefilledClientSearch] = React.useState('');
   const [showNotifications, setShowNotifications] = React.useState(false);
+  const [systemAlerts, setSystemAlerts] = React.useState<{ id: string; type: string; message: string; timestamp: number }[]>([]);
 
   // Online status state
   const [isOnline, setIsOnline] = React.useState(navigator.onLine);
@@ -381,8 +382,11 @@ export default function App() {
 
   // Sign out
   const handleLogout = () => {
-    setCurrentUser(null);
-    localStorage.removeItem('dolibarr_current_user');
+    const confirmMessage = lang === 'ar' ? 'هل أنت متأكد أنك تريد الخروج من التطبيق؟' : 'Êtes-vous sûr de vouloir vous déconnecter ?';
+    if (window.confirm(confirmMessage)) {
+      setCurrentUser(null);
+      localStorage.removeItem('dolibarr_current_user');
+    }
   };
 
 
@@ -547,6 +551,27 @@ export default function App() {
   };
 
   const handleEditProduct = (p: Product) => {
+    const oldProd = products.find(item => item.id === p.id);
+    if (oldProd && (oldProd.sellPrice !== p.sellPrice || oldProd.buyPrice !== p.buyPrice)) {
+      const msg = lang === 'ar' 
+        ? `تم تعديل ثمن المنتج "${p.name}"`
+        : `Prix modifié pour "${p.name}"`;
+
+      setSystemAlerts(prev => [...prev, { id: `price-${Date.now()}`, type: 'price', message: msg, timestamp: Date.now() }]);
+
+      if ("Notification" in window) {
+        if (Notification.permission === 'granted') {
+          new Notification(lang === 'ar' ? 'تنبيه: تعديل ثمن' : 'Alerte: Modif prix', { body: msg });
+        } else if (Notification.permission !== 'denied') {
+          Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+              new Notification(lang === 'ar' ? 'تنبيه: تعديل ثمن' : 'Alerte: Modif prix', { body: msg });
+            }
+          });
+        }
+      }
+    }
+
     enqueueSync('products', 'update', p);
     setProducts(prev => prev.map(item => item.id === p.id ? p : item));
     logActivity(
@@ -1091,8 +1116,18 @@ export default function App() {
       }
     });
 
+    systemAlerts.forEach(sa => {
+      list.push({
+        id: sa.id,
+        type: sa.type as any,
+        clientName: '',
+        daysLeft: 0,
+        message: sa.message
+      });
+    });
+
     return list;
-  }, [clients, lang]);
+  }, [clients, lang, systemAlerts]);
 
   // Synchronized search filters for the header bar
   const filteredProducts = globalSearchQuery.trim() ? products.filter(p => 
