@@ -6,6 +6,7 @@ import {
   Search, 
   UserPlus, 
   Trash2, 
+  Edit2,
   Edit3, 
   Mail, 
   Phone, 
@@ -234,6 +235,39 @@ export default function ClientsList({
     setIsOpenModal(true);
   };
 
+  const handleEditHistory = (client: Client, historyIndex: number, currentHistPage: number | string) => {
+    const newPageStr = window.prompt(isRtl ? "أدخل رقم الصفحة الجديد:" : "Entrez le nouveau numéro de page:", String(currentHistPage));
+    if (newPageStr !== null && newPageStr.trim() !== '') {
+      const newPage = parseInt(newPageStr, 10);
+      if (!isNaN(newPage) && newPage > 0) {
+        // Prevent duplicate page
+        const isTaken = clients.find(c => Number(getClientPage(c)) === newPage && c.id !== client.id);
+        if (isTaken) {
+          alert(isRtl 
+            ? `⚠️ لا يمكن تعديل السجل! رقم الصفحة (${newPage}) مستعمل حالياً من طرف الزبون "${isTaken.name}".`
+            : `⚠️ Le numéro de page ${newPage} est déjà utilisé par: ${isTaken.name}.`);
+          return;
+        }
+
+        const updatedHistory = [...(client.pageHistory || [])];
+        updatedHistory[historyIndex] = { ...updatedHistory[historyIndex], page: newPage };
+        const updatedClient = { ...client, pageHistory: updatedHistory };
+        enqueueSync('update_client', updatedClient);
+        setSelectedClient(updatedClient);
+      }
+    }
+  };
+
+  const handleDeleteHistory = (client: Client, historyIndex: number) => {
+    if (window.confirm(isRtl ? "هل أنت متأكد من حذف هذا السجل بشكل نهائي؟" : "Êtes-vous sûr de vouloir supprimer cet historique ?")) {
+      const updatedHistory = [...(client.pageHistory || [])];
+      updatedHistory.splice(historyIndex, 1);
+      const updatedClient = { ...client, pageHistory: updatedHistory };
+      enqueueSync('update_client', updatedClient);
+      setSelectedClient(updatedClient);
+    }
+  };
+
   const handleCreateNewClick = () => {
     setEditingId(null);
     setFormName('');
@@ -284,11 +318,11 @@ export default function ClientsList({
       }
     }
 
-    const oldPage = matchedClient?.pageNumber || 0;
-    if (newPage !== oldPage) {
+    const oldPage = matchedClient ? Number(getClientPage(matchedClient)) : 0;
+    if (editingId && oldPage > 0 && newPage !== oldPage) {
       updatedPageHistory = [
         ...updatedPageHistory,
-        { page: newPage, assignedAt: new Date().toISOString() }
+        { page: oldPage, assignedAt: new Date().toISOString() }
       ];
     }
 
@@ -721,9 +755,19 @@ export default function ClientsList({
               {selectedClient.pageHistory && selectedClient.pageHistory.length > 0 ? (
                 <div className="space-y-1.5 pt-2 border-t border-blue-100/40 max-h-[120px] overflow-y-auto">
                   {selectedClient.pageHistory.slice().reverse().map((hist, idx) => (
-                    <div key={idx} className="bg-white p-2 border border-blue-50 rounded-lg text-[10px] flex justify-between items-center font-mono">
+                    <div key={idx} className="bg-white p-2 border border-blue-50 rounded-lg text-[10px] flex justify-between items-center font-mono group hover:bg-slate-50 transition-colors">
                       <span className="font-bold text-blue-900">{isRtl ? `صفحة: ${hist.page}` : `Page: ${hist.page}`}</span>
-                      <span className="text-[8.5px] text-gray-400 font-sans">{new Date(hist.assignedAt).toLocaleString(lang === 'ar' ? 'ar-EG' : 'fr-FR')}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[8.5px] text-gray-400 font-sans">{new Date(hist.assignedAt).toLocaleString(lang === 'ar' ? 'ar-EG' : 'fr-FR')}</span>
+                        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button onClick={(e) => { e.stopPropagation(); handleEditHistory(selectedClient, selectedClient.pageHistory!.length - 1 - idx, hist.page); }} className="text-blue-500 hover:text-blue-700 hover:bg-blue-50 p-1 rounded" title={isRtl ? "تعديل" : "Modifier"}>
+                            <Edit2 className="w-3 h-3" />
+                          </button>
+                          <button onClick={(e) => { e.stopPropagation(); handleDeleteHistory(selectedClient, selectedClient.pageHistory!.length - 1 - idx); }} className="text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded" title={isRtl ? "حذف" : "Supprimer"}>
+                            <Trash2 className="w-3 h-3" />
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>
