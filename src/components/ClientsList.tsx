@@ -127,13 +127,17 @@ export default function ClientsList({
   const [formDebtDueDate, setFormDebtDueDate] = React.useState<string>('');
   const [formPageNumber, setFormPageNumber] = React.useState<number | string>('');
   
-  // Postal Check Form States
-  const [formHasPostalCheck, setFormHasPostalCheck] = React.useState<boolean>(false);
-  const [formPostalChecks, setFormPostalChecks] = React.useState<PostalCheck[]>([]);
+  // Removed formHasPostalCheck and formPostalChecks as requested
   // Temp inputs for adding a new check inside modal
   const [tempAmount, setTempAmount] = React.useState<string>('');
   const [tempEntryDate, setTempEntryDate] = React.useState<string>(todayStr);
   const [tempExpiryDate, setTempExpiryDate] = React.useState<string>(todayStr);
+
+  // States for inline editing a postal check
+  const [editingCheckId, setEditingCheckId] = React.useState<string | null>(null);
+  const [editCheckAmount, setEditCheckAmount] = React.useState<string>('');
+  const [editCheckEntryDate, setEditCheckEntryDate] = React.useState<string>('');
+  const [editCheckExpiryDate, setEditCheckExpiryDate] = React.useState<string>('');
 
   // Period filters for purchase calculation
   const [purchaseDateFrom, setPurchaseDateFrom] = React.useState('');
@@ -190,32 +194,7 @@ export default function ClientsList({
     setSettlementNote('');
   };
 
-  const handleAddCheck = () => {
-    const amt = parseFloat(tempAmount);
-    if (isNaN(amt) || amt <= 0) {
-      alert(isRtl ? '⚠️ يرجى إدخال مبلغ صحيح للشيك!' : '⚠️ Veuillez entrer un montant de chèque valide !');
-      return;
-    }
-    if (!tempExpiryDate) {
-      alert(isRtl ? '⚠️ تاريخ نهاية الصلاحية ضروري!' : "⚠️ L'échéance est obligatoire !");
-      return;
-    }
-
-    const newCheck: PostalCheck = {
-      id: `chk-${Date.now()}`,
-      amount: amt,
-      entryDate: tempEntryDate || todayStr,
-      expiryDate: tempExpiryDate
-    };
-
-    setFormPostalChecks(prev => [...prev, newCheck]);
-    setTempAmount('');
-  };
-
-  const handleRemoveCheck = (id: string) => {
-    setFormPostalChecks(prev => prev.filter(chk => chk.id !== id));
-  };
-
+  // Removed Add/Remove check handlers from main form
   const handleEditClick = (c: Client, e: React.MouseEvent) => {
     e.stopPropagation(); // prevent opening details
     setEditingId(c.id);
@@ -226,8 +205,7 @@ export default function ClientsList({
     setFormOutstandingDebt(c.outstandingDebt || 0);
     setFormDebtDate(c.debtDate || todayStr);
     setFormDebtDueDate(c.debtDueDate || '');
-    setFormHasPostalCheck(c.hasPostalCheck || (c.postalChecks && c.postalChecks.length > 0) || false);
-    setFormPostalChecks(c.postalChecks || []);
+
     setFormPageNumber(getClientPage(c));
     setTempAmount('');
     setTempEntryDate(todayStr);
@@ -277,8 +255,7 @@ export default function ClientsList({
     setFormOutstandingDebt(0);
     setFormDebtDate(todayStr);
     setFormDebtDueDate('');
-    setFormHasPostalCheck(false);
-    setFormPostalChecks([]);
+
     
     const maxPage = clients.reduce((max, c) => Math.max(max, Number(getClientPage(c)) || 0), 0);
     setFormPageNumber(maxPage + 1);
@@ -339,8 +316,8 @@ export default function ClientsList({
       debtDate: formOutstandingDebt > 0 ? formDebtDate : undefined,
       debtDueDate: formOutstandingDebt > 0 ? formDebtDueDate : undefined,
       debtPayments: matchedClient?.debtPayments || [],
-      hasPostalCheck: formHasPostalCheck && formPostalChecks.length > 0,
-      postalChecks: formHasPostalCheck ? formPostalChecks : [],
+      hasPostalCheck: matchedClient?.hasPostalCheck || false,
+      postalChecks: matchedClient?.postalChecks || [],
       pageNumber: newPage,
       pageHistory: updatedPageHistory
     };
@@ -781,45 +758,94 @@ export default function ClientsList({
                     const status = getCheckStatus(chk.expiryDate);
                     return (
                       <div key={chk.id} className="bg-white p-2.5 border border-indigo-50 rounded-lg flex flex-col gap-1.5 shadow-sm">
-                        <div className="flex justify-between items-center">
-                          <span className="font-extrabold text-indigo-900 font-mono text-[11px]">{chk.amount.toFixed(2)} </span>
-                          <span className={`px-1.5 py-0.5 rounded text-[8.5px] font-black uppercase border ${status.className}`}>
-                            {status.label}
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center text-[9px] text-gray-400 font-mono mt-1">
-                          <span>{isRtl ? `ت. الإصدار:` : `Émis:`} {chk.entryDate}</span>
-                          <span className="font-bold text-gray-500">{isRtl ? `ت. الاستحقاق:` : `Échéance:`} {chk.expiryDate}</span>
-                        </div>
-                        <div className="flex justify-end gap-2 pt-1.5 border-t border-indigo-50 mt-1">
-                          <button 
-                            onClick={() => {
-                              const newAmount = window.prompt(isRtl ? 'أدخل المبلغ الجديد:' : 'Nouveau montant:', String(chk.amount));
-                              if (newAmount && !isNaN(Number(newAmount))) {
-                                const updatedChecks = selectedClient.postalChecks!.map(c => c.id === chk.id ? { ...c, amount: Number(newAmount) } : c);
-                                const updatedClient = { ...selectedClient, postalChecks: updatedChecks };
-                                onEditClient(updatedClient);
-                                setSelectedClient(updatedClient);
-                              }
-                            }}
-                            className="p-1 hover:bg-blue-50 text-blue-500 rounded"
-                          >
-                            <Edit3 className="w-3.5 h-3.5" />
-                          </button>
-                          <button 
-                            onClick={() => {
-                              if (window.confirm(isRtl ? 'تأكيد حذف هذا الشيك؟' : 'Confirmer la suppression du chèque ?')) {
-                                const updatedChecks = selectedClient.postalChecks!.filter(c => c.id !== chk.id);
-                                const updatedClient = { ...selectedClient, postalChecks: updatedChecks };
-                                onEditClient(updatedClient);
-                                setSelectedClient(updatedClient);
-                              }
-                            }}
-                            className="p-1 hover:bg-rose-50 text-rose-500 rounded"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </button>
-                        </div>
+                        {editingCheckId === chk.id ? (
+                          <div className="flex flex-col gap-2">
+                            <input 
+                              type="number" 
+                              value={editCheckAmount} 
+                              onChange={e => setEditCheckAmount(e.target.value)} 
+                              className="w-full p-1.5 bg-indigo-50/30 border border-indigo-100 rounded text-xs" 
+                              placeholder={isRtl ? "المبلغ" : "Montant"}
+                            />
+                            <div className="flex gap-2">
+                              <input 
+                                type="date" 
+                                value={editCheckEntryDate} 
+                                onChange={e => setEditCheckEntryDate(e.target.value)} 
+                                className="w-1/2 p-1.5 bg-indigo-50/30 border border-indigo-100 rounded text-xs" 
+                              />
+                              <input 
+                                type="date" 
+                                value={editCheckExpiryDate} 
+                                onChange={e => setEditCheckExpiryDate(e.target.value)} 
+                                className="w-1/2 p-1.5 bg-indigo-50/30 border border-indigo-100 rounded text-xs" 
+                              />
+                            </div>
+                            <div className="flex justify-end gap-2 mt-1">
+                              <button 
+                                onClick={() => {
+                                  const amt = parseFloat(editCheckAmount);
+                                  if (isNaN(amt) || amt <= 0 || !editCheckExpiryDate) return;
+                                  const updatedChecks = selectedClient.postalChecks!.map(c => 
+                                    c.id === chk.id ? { ...c, amount: amt, entryDate: editCheckEntryDate, expiryDate: editCheckExpiryDate } : c
+                                  );
+                                  const updatedClient = { ...selectedClient, postalChecks: updatedChecks };
+                                  onEditClient(updatedClient);
+                                  setSelectedClient(updatedClient);
+                                  setEditingCheckId(null);
+                                }}
+                                className="px-2 py-1 bg-green-500 text-white rounded text-[10px] font-bold"
+                              >
+                                {isRtl ? "حفظ" : "Sauver"}
+                              </button>
+                              <button 
+                                onClick={() => setEditingCheckId(null)}
+                                className="px-2 py-1 bg-gray-200 text-gray-700 rounded text-[10px] font-bold"
+                              >
+                                {isRtl ? "إلغاء" : "Annuler"}
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <>
+                            <div className="flex justify-between items-center">
+                              <span className="font-extrabold text-indigo-900 font-mono text-[11px]">{chk.amount.toFixed(2)} </span>
+                              <span className={`px-1.5 py-0.5 rounded text-[8.5px] font-black uppercase border ${status.className}`}>
+                                {status.label}
+                              </span>
+                            </div>
+                            <div className="flex justify-between items-center text-[9px] text-gray-400 font-mono mt-1">
+                              <span>{isRtl ? `ت. الإصدار:` : `Émis:`} {chk.entryDate}</span>
+                              <span className="font-bold text-gray-500">{isRtl ? `ت. الاستحقاق:` : `Échéance:`} {chk.expiryDate}</span>
+                            </div>
+                            <div className="flex justify-end gap-2 pt-1.5 border-t border-indigo-50 mt-1">
+                              <button 
+                                onClick={() => {
+                                  setEditingCheckId(chk.id);
+                                  setEditCheckAmount(String(chk.amount));
+                                  setEditCheckEntryDate(chk.entryDate);
+                                  setEditCheckExpiryDate(chk.expiryDate);
+                                }}
+                                className="p-1 hover:bg-blue-50 text-blue-500 rounded"
+                              >
+                                <Edit3 className="w-3.5 h-3.5" />
+                              </button>
+                              <button 
+                                onClick={() => {
+                                  if (window.confirm(isRtl ? 'تأكيد حذف هذا الشيك؟' : 'Confirmer la suppression du chèque ?')) {
+                                    const updatedChecks = selectedClient.postalChecks!.filter(c => c.id !== chk.id);
+                                    const updatedClient = { ...selectedClient, postalChecks: updatedChecks, hasPostalCheck: updatedChecks.length > 0 };
+                                    onEditClient(updatedClient);
+                                    setSelectedClient(updatedClient);
+                                  }
+                                }}
+                                className="p-1 hover:bg-rose-50 text-rose-500 rounded"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          </>
+                        )}
                       </div>
                     );
                   })}
