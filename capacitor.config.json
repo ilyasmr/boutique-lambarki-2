@@ -1,6 +1,6 @@
 {
-  "appId": "lambarki.boutique2.erp",
-  "appName": "محل المباركي 2",
+  "appId": "com.boutiquelambarki.app",
+  "appName": "Boutique Lambarki",
   "webDir": "dist",
   "bundledWebRuntime": false,
   "plugins": {
