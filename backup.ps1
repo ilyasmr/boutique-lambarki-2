@@ -5,13 +5,13 @@
 $ErrorActionPreference = "Stop"
 
 # Define directories
-$ProjectDir = "C:\Users\PRO\Downloads\dolibarr-boutique"
+$ProjectDir = "C:\Users\PRO\Downloads\boutique-lambarki-2"
 $BackupDir = "$ProjectDir\backups"
 $TempDir = "$BackupDir\temp"
 $Timestamp = (Get-Date).ToString("yyyyMMdd_HHmmss")
-$ZipFile = "$BackupDir\backup_$Timestamp.zip"
+$ZipFile = "$BackupDir\database_backup_$Timestamp.zip"
 
-Write-Output "Starting backup process..."
+Write-Output "Starting database backup process..."
 
 # 1. Create backups directory if it doesn't exist
 if (-not (Test-Path $BackupDir)) {
@@ -25,13 +25,8 @@ if (Test-Path $TempDir) {
 }
 New-Item -ItemType Directory -Path $TempDir | Out-Null
 
-# 2. Copy source files (excluding heavy directories)
-Write-Output "Staging files for backup..."
-Get-ChildItem -Path $ProjectDir | Where-Object {
-    $_.Name -notin "node_modules", "dist", ".git", "backups"
-} | ForEach-Object {
-    Copy-Item -Path $_.FullName -Destination $TempDir -Recurse -Force
-}
+# 2. Copy source files - REMOVED (We only need to backup the database to save space)
+Write-Output "Skipping source code copy to save space. Only database will be backed up."
 
 # 3. Perform database JSON backup inside temp directory
 Write-Output "Querying and exporting database tables..."

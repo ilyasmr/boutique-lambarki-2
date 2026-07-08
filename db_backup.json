@@ -1,0 +1,674 @@
+{
+  "timestamp": "2026-07-08T10:36:19.167Z",
+  "users": [
+    {
+      "id": "usr-1",
+      "username": "admin",
+      "name": "Ilias Lambarki",
+      "role": "admin",
+      "email": "lamb.ilyas@gmail.com",
+      "active": true,
+      "password": "ilyas_mr3"
+    },
+    {
+      "id": "usr-2",
+      "username": "caissier",
+      "name": "Yassine Alami",
+      "role": "cashier",
+      "email": "yassine.alami@lambarki.ma",
+      "active": true,
+      "password": "yassine123"
+    },
+    {
+      "id": "usr-3",
+      "username": "rachida",
+      "name": "Fouad Lambarki",
+      "role": "admin",
+      "email": "fouad.l@lambarki.ma",
+      "active": true,
+      "password": "fouad123"
+    }
+  ],
+  "clients": [
+    {
+      "id": "cli-1783351006878",
+      "name": "mohamed ",
+      "email": "",
+      "phone": "38383",
+      "address": "df",
+      "joinDate": "2026-07-06",
+      "totalSpent": 0,
+      "outstandingDebt": 0,
+      "debtDate": null,
+      "debtDueDate": null,
+      "debtPayments": [],
+      "hasPostalCheck": false,
+      "postalChecks": [],
+      "purchases": []
+    },
+    {
+      "id": "cli-pass-1783339649895",
+      "name": "حميد سليتة دوار صفاري ضامنو بوسلهامي",
+      "email": "",
+      "phone": "",
+      "address": "dwar sfari",
+      "joinDate": "2026-07-06",
+      "totalSpent": 0,
+      "outstandingDebt": 0,
+      "debtDate": null,
+      "debtDueDate": null,
+      "debtPayments": [
+        {
+          "id": "dp-1783352068240",
+          "date": "2026-07-06T15:34:28.240Z",
+          "notes": "تسديد ديون قصيرة المدى",
+          "amount": 260000,
+          "operator": "Admin",
+          "paymentMethod": "cash"
+        }
+      ],
+      "hasPostalCheck": true,
+      "postalChecks": [
+        {
+          "id": "chk-1783340599846",
+          "amount": 20000,
+          "entryDate": "2026-07-06",
+          "expiryDate": "2026-10-01"
+        }
+      ],
+      "purchases": []
+    },
+    {
+      "id": "cli-pass-1783460879570",
+      "name": "عبد القادر ولد عمي",
+      "email": "",
+      "phone": "",
+      "address": "زبون عابر",
+      "joinDate": "2026-07-07",
+      "totalSpent": 0,
+      "outstandingDebt": 42000,
+      "debtDate": "2026-07-07",
+      "debtDueDate": "2026-07-07",
+      "debtPayments": [],
+      "hasPostalCheck": false,
+      "postalChecks": [],
+      "purchases": []
+    }
+  ],
+  "products": [
+    {
+      "id": "prod-1783354587713",
+      "name": "كليو سطار",
+      "sku": "6118532657522",
+      "buyPrice": 10600,
+      "sellPrice": 12000,
+      "category": "دواء الربيع",
+      "stock": 20,
+      "minStockAlert": 5,
+      "description": "",
+      "image": ""
+    },
+    {
+      "id": "prod-1783337763931",
+      "name": "ملحة 33",
+      "sku": "6112006781917",
+      "buyPrice": 4600,
+      "sellPrice": 4700,
+      "category": "ملحة",
+      "stock": 20,
+      "minStockAlert": 5,
+      "description": "",
+      "image": ""
+    },
+    {
+      "id": "prod-1783351916014",
+      "name": "ملحة 46",
+      "sku": "6117995876730",
+      "buyPrice": 5600,
+      "sellPrice": 5800,
+      "category": "ملحة",
+      "stock": 20,
+      "minStockAlert": 5,
+      "description": "",
+      "image": ""
+    },
+    {
+      "id": "prod-1783456805688",
+      "name": "لانكري 15.30.10",
+      "sku": "6111586985807",
+      "buyPrice": 3050,
+      "sellPrice": 3200,
+      "category": "لانكري",
+      "stock": 20,
+      "minStockAlert": 5,
+      "description": "",
+      "image": ""
+    },
+    {
+      "id": "prod-1783456766403",
+      "name": "لانكري 10.30.10",
+      "sku": "6114573946480",
+      "buyPrice": 2800,
+      "sellPrice": 3000,
+      "category": "لانكري",
+      "stock": 20,
+      "minStockAlert": 5,
+      "description": "",
+      "image": ""
+    },
+    {
+      "id": "prod-1783456893276",
+      "name": "لانكري 14.28.14",
+      "sku": "6113828551001",
+      "buyPrice": 3300,
+      "sellPrice": 3500,
+      "category": "لانكري",
+      "stock": 20,
+      "minStockAlert": 5,
+      "description": "",
+      "image": ""
+    },
+    {
+      "id": "prod-1783456941455",
+      "name": "لانكري DAP بيض",
+      "sku": "6119600421868",
+      "buyPrice": 4700,
+      "sellPrice": 5500,
+      "category": "لانكري",
+      "stock": 20,
+      "minStockAlert": 5,
+      "description": "",
+      "image": ""
+    },
+    {
+      "id": "prod-1783456976833",
+      "name": "لانكري DAP حمر",
+      "sku": "6117882452140",
+      "buyPrice": 4000,
+      "sellPrice": 5000,
+      "category": "لانكري",
+      "stock": 20,
+      "minStockAlert": 5,
+      "description": "",
+      "image": ""
+    },
+    {
+      "id": "prod-1783457035640",
+      "name": "ملحة 21",
+      "sku": "6111306382148",
+      "buyPrice": 3050,
+      "sellPrice": 3200,
+      "category": "ملحة",
+      "stock": 20,
+      "minStockAlert": 5,
+      "description": "",
+      "image": ""
+    },
+    {
+      "id": "prod-1783439724884",
+      "name": "نخالة",
+      "sku": "6119621522896",
+      "buyPrice": 1450,
+      "sellPrice": 1600,
+      "category": "علف",
+      "stock": 20,
+      "minStockAlert": 5,
+      "description": "",
+      "image": ""
+    },
+    {
+      "id": "prod-1783457319249",
+      "name": "بنواي سمونية صفر",
+      "sku": "6119634237944",
+      "buyPrice": 2800,
+      "sellPrice": 3200,
+      "category": "علف",
+      "stock": 20,
+      "minStockAlert": 5,
+      "description": "",
+      "image": ""
+    },
+    {
+      "id": "prod-1783457378910",
+      "name": "مكناس سمنية 115",
+      "sku": "6111892098120",
+      "buyPrice": 3800,
+      "sellPrice": 4000,
+      "category": "علف",
+      "stock": 20,
+      "minStockAlert": 5,
+      "description": "",
+      "image": ""
+    },
+    {
+      "id": "prod-1783457482977",
+      "name": "فول kg",
+      "sku": "6118234380857",
+      "buyPrice": 0,
+      "sellPrice": 140,
+      "category": "علف",
+      "stock": 20,
+      "minStockAlert": 5,
+      "description": "",
+      "image": ""
+    }
+  ],
+  "invoices": [],
+  "stockMovements": [],
+  "activities": [
+    {
+      "id": "act-1783337763933-292",
+      "type": "product_add",
+      "date": "2026-07-06T11:36:03.933Z",
+      "operator": "Admin",
+      "descriptionAr": "إضافة منتج جديد: \"malha 33\" في صنف malha 33 بسعر بيع 100 DH",
+      "descriptionFr": "Ajout d'un nouveau produit: \"malha 33\" dans la catégorie malha 33 au prix de 100 DH",
+      "targetId": "prod-1783337763931"
+    },
+    {
+      "id": "act-1783337773017-287",
+      "type": "product_delete",
+      "date": "2026-07-06T11:36:13.017Z",
+      "operator": "Admin",
+      "descriptionAr": "حذف المنتج: \"Sel de table 1kg\"",
+      "descriptionFr": "Suppression du produit: \"Sel de table 1kg\"",
+      "targetId": "prod-5"
+    },
+    {
+      "id": "act-1783339542080-540",
+      "type": "client_edit",
+      "date": "2026-07-06T12:05:42.080Z",
+      "operator": "Admin",
+      "descriptionAr": "تعديل معلومات الزبون: \"Hassan Agro\"",
+      "descriptionFr": "Modification des informations du client: \"Hassan Agro\"",
+      "targetId": "cli-2"
+    },
+    {
+      "id": "act-1783339649896-845",
+      "type": "client_add",
+      "date": "2026-07-06T12:07:29.896Z",
+      "operator": "Admin",
+      "descriptionAr": "إضافة زبون جديد: \"حميد سليتة دوار صفاري ضامنو بوسلهامي\" ()",
+      "descriptionFr": "Ajout d'un nouveau client: \"حميد سليتة دوار صفاري ضامنو بوسلهامي\" ()",
+      "targetId": "cli-pass-1783339649895"
+    },
+    {
+      "id": "act-1783339780432-515",
+      "type": "product_delete",
+      "date": "2026-07-06T12:09:40.432Z",
+      "operator": "Admin",
+      "descriptionAr": "حذف المنتج: \"Farine de blé 1kg\"",
+      "descriptionFr": "Suppression du produit: \"Farine de blé 1kg\"",
+      "targetId": "prod-3"
+    },
+    {
+      "id": "act-1783339784185-632",
+      "type": "product_delete",
+      "date": "2026-07-06T12:09:44.185Z",
+      "operator": "Admin",
+      "descriptionAr": "حذف المنتج: \"Huile d'olive Extra Vierge 1L\"",
+      "descriptionFr": "Suppression du produit: \"Huile d'olive Extra Vierge 1L\"",
+      "targetId": "prod-1"
+    },
+    {
+      "id": "act-1783339791098-936",
+      "type": "product_delete",
+      "date": "2026-07-06T12:09:51.098Z",
+      "operator": "Admin",
+      "descriptionAr": "حذف المنتج: \"Sucre en poudre 1kg\"",
+      "descriptionFr": "Suppression du produit: \"Sucre en poudre 1kg\"",
+      "targetId": "prod-2"
+    },
+    {
+      "id": "act-1783339795290-91",
+      "type": "product_delete",
+      "date": "2026-07-06T12:09:55.290Z",
+      "operator": "Admin",
+      "descriptionAr": "حذف المنتج: \"Thé vert Maroc 200g\"",
+      "descriptionFr": "Suppression du produit: \"Thé vert Maroc 200g\"",
+      "targetId": "prod-4"
+    },
+    {
+      "id": "act-1783339887655-864",
+      "type": "client_edit",
+      "date": "2026-07-06T12:11:27.655Z",
+      "operator": "Admin",
+      "descriptionAr": "تعديل معلومات الزبون: \"حميد سليتة دوار صفاري ضامنو بوسلهامي\"",
+      "descriptionFr": "Modification des informations du client: \"حميد سليتة دوار صفاري ضامنو بوسلهامي\"",
+      "targetId": "cli-pass-1783339649895"
+    },
+    {
+      "id": "act-1783339999863-359",
+      "type": "client_delete",
+      "date": "2026-07-06T12:13:19.863Z",
+      "operator": "Admin",
+      "descriptionAr": "حذف الزبون: \"Hassan Agro\"",
+      "descriptionFr": "Suppression du client: \"Hassan Agro\"",
+      "targetId": "cli-2"
+    },
+    {
+      "id": "act-1783340002030-192",
+      "type": "client_delete",
+      "date": "2026-07-06T12:13:22.030Z",
+      "operator": "Admin",
+      "descriptionAr": "حذف الزبون: \"Ahmed El Amrani\"",
+      "descriptionFr": "Suppression du client: \"Ahmed El Amrani\"",
+      "targetId": "cli-1"
+    },
+    {
+      "id": "act-1783340012307-780",
+      "type": "client_delete",
+      "date": "2026-07-06T12:13:32.307Z",
+      "operator": "Admin",
+      "descriptionAr": "حذف الزبون: \"Ahmed El Amrani\"",
+      "descriptionFr": "Suppression du client: \"Ahmed El Amrani\"",
+      "targetId": "cli-1"
+    },
+    {
+      "id": "act-1783340021629-892",
+      "type": "client_delete",
+      "date": "2026-07-06T12:13:41.629Z",
+      "operator": "Admin",
+      "descriptionAr": "حذف الزبون: \"Ahmed El Amrani\"",
+      "descriptionFr": "Suppression du client: \"Ahmed El Amrani\"",
+      "targetId": "cli-1"
+    },
+    {
+      "id": "act-1783340084363-645",
+      "type": "client_edit",
+      "date": "2026-07-06T12:14:44.363Z",
+      "operator": "Admin",
+      "descriptionAr": "تعديل معلومات الزبون: \"حميد سليتة دوار صفاري ضامنو بوسلهامي\"",
+      "descriptionFr": "Modification des informations du client: \"حميد سليتة دوار صفاري ضامنو بوسلهامي\"",
+      "targetId": "cli-pass-1783339649895"
+    },
+    {
+      "id": "act-1783340599847-788",
+      "type": "client_edit",
+      "date": "2026-07-06T12:23:19.847Z",
+      "operator": "Admin",
+      "descriptionAr": "تعديل معلومات الزبون: \"حميد سليتة دوار صفاري ضامنو بوسلهامي\"",
+      "descriptionFr": "Modification des informations du client: \"حميد سليتة دوار صفاري ضامنو بوسلهامي\"",
+      "targetId": "cli-pass-1783339649895"
+    },
+    {
+      "id": "act-1783351006879-327",
+      "type": "client_add",
+      "date": "2026-07-06T15:16:46.879Z",
+      "operator": "Admin",
+      "descriptionAr": "إضافة زبون جديد: \"mohamed \" (38383)",
+      "descriptionFr": "Ajout d'un nouveau client: \"mohamed \" (38383)",
+      "targetId": "cli-1783351006878"
+    },
+    {
+      "id": "act-1783351126328-522",
+      "type": "client_edit",
+      "date": "2026-07-06T15:18:46.328Z",
+      "operator": "Admin",
+      "descriptionAr": "تعديل معلومات الزبون: \"حميد سليتة دوار صفاري ضامنو بوسلهامي\"",
+      "descriptionFr": "Modification des informations du client: \"حميد سليتة دوار صفاري ضامنو بوسلهامي\"",
+      "targetId": "cli-pass-1783339649895"
+    },
+    {
+      "id": "act-1783351162221-166",
+      "type": "client_edit",
+      "date": "2026-07-06T15:19:22.221Z",
+      "operator": "Admin",
+      "descriptionAr": "تعديل معلومات الزبون: \"حميد سليتة دوار صفاري ضامنو بوسلهامي\"",
+      "descriptionFr": "Modification des informations du client: \"حميد سليتة دوار صفاري ضامنو بوسلهامي\"",
+      "targetId": "cli-pass-1783339649895"
+    },
+    {
+      "id": "act-1783351916016-756",
+      "type": "product_add",
+      "date": "2026-07-06T15:31:56.016Z",
+      "operator": "Admin",
+      "descriptionAr": "إضافة منتج جديد: \"malha 46\" في صنف malha 33 بسعر بيع 5800 DH",
+      "descriptionFr": "Ajout d'un nouveau produit: \"malha 46\" dans la catégorie malha 33 au prix de 5800 DH",
+      "targetId": "prod-1783351916014"
+    },
+    {
+      "id": "act-1783352068242-307",
+      "type": "client_edit",
+      "date": "2026-07-06T15:34:28.242Z",
+      "operator": "Admin",
+      "descriptionAr": "تعديل معلومات الزبون: \"حميد سليتة دوار صفاري ضامنو بوسلهامي\"",
+      "descriptionFr": "Modification des informations du client: \"حميد سليتة دوار صفاري ضامنو بوسلهامي\"",
+      "targetId": "cli-pass-1783339649895"
+    },
+    {
+      "id": "act-1783353365900-587",
+      "type": "client_edit",
+      "date": "2026-07-06T15:56:05.900Z",
+      "operator": "Admin",
+      "descriptionAr": "تعديل معلومات الزبون: \"حميد سليتة دوار صفاري ضامنو بوسلهامي\"",
+      "descriptionFr": "Modification des informations du client: \"حميد سليتة دوار صفاري ضامنو بوسلهامي\"",
+      "targetId": "cli-pass-1783339649895"
+    },
+    {
+      "id": "act-1783354504005-123",
+      "type": "product_edit",
+      "date": "2026-07-06T16:15:04.005Z",
+      "operator": "Admin",
+      "descriptionAr": "تعديل معلومات المنتج: \"malha 33\" (الرمز: 6112006781917)",
+      "descriptionFr": "Modification des informations du produit: \"malha 33\" (SKU: 6112006781917)",
+      "targetId": "prod-1783337763931"
+    },
+    {
+      "id": "act-1783354522767-712",
+      "type": "product_edit",
+      "date": "2026-07-06T16:15:22.767Z",
+      "operator": "Admin",
+      "descriptionAr": "تعديل معلومات المنتج: \"malha 33\" (الرمز: 6112006781917)",
+      "descriptionFr": "Modification des informations du produit: \"malha 33\" (SKU: 6112006781917)",
+      "targetId": "prod-1783337763931"
+    },
+    {
+      "id": "act-1783354587715-454",
+      "type": "product_add",
+      "date": "2026-07-06T16:16:27.715Z",
+      "operator": "Admin",
+      "descriptionAr": "إضافة منتج جديد: \"كليو سطار\" في صنف دواء الربيع بسعر بيع 18 DH",
+      "descriptionFr": "Ajout d'un nouveau produit: \"كليو سطار\" dans la catégorie دواء الربيع au prix de 18 DH",
+      "targetId": "prod-1783354587713"
+    },
+    {
+      "id": "act-1783354629206-578",
+      "type": "product_edit",
+      "date": "2026-07-06T16:17:09.206Z",
+      "operator": "Admin",
+      "descriptionAr": "تعديل معلومات المنتج: \"كليو سطار\" (الرمز: 6118532657522)",
+      "descriptionFr": "Modification des informations du produit: \"كليو سطار\" (SKU: 6118532657522)",
+      "targetId": "prod-1783354587713"
+    },
+    {
+      "id": "act-1783356802269-923",
+      "type": "client_edit",
+      "date": "2026-07-06T16:53:22.269Z",
+      "operator": "Admin",
+      "descriptionAr": "تعديل معلومات الزبون: \"حميد سليتة دوار صفاري ضامنو بوسلهامي\"",
+      "descriptionFr": "Modification des informations du client: \"حميد سليتة دوار صفاري ضامنو بوسلهامي\"",
+      "targetId": "cli-pass-1783339649895"
+    },
+    {
+      "id": "act-1783356829948-672",
+      "type": "client_edit",
+      "date": "2026-07-06T16:53:49.948Z",
+      "operator": "Admin",
+      "descriptionAr": "تعديل معلومات الزبون: \"حميد سليتة دوار صفاري ضامنو بوسلهامي\"",
+      "descriptionFr": "Modification des informations du client: \"حميد سليتة دوار صفاري ضامنو بوسلهامي\"",
+      "targetId": "cli-pass-1783339649895"
+    },
+    {
+      "id": "act-1783421942249-999",
+      "type": "client_add",
+      "date": "2026-07-07T10:59:02.249Z",
+      "operator": "Admin",
+      "descriptionAr": "إضافة زبون جديد: \"زهير سعدون\" ()",
+      "descriptionFr": "Ajout d'un nouveau client: \"زهير سعدون\" ()",
+      "targetId": "cli-1783421942243"
+    },
+    {
+      "id": "act-1783439724891-76",
+      "type": "product_add",
+      "date": "2026-07-07T15:55:24.891Z",
+      "operator": "Admin",
+      "descriptionAr": "إضافة منتج جديد: \"نخالة\" في صنف علف بسعر بيع 18 DH",
+      "descriptionFr": "Ajout d'un nouveau produit: \"نخالة\" dans la catégorie علف au prix de 18 DH",
+      "targetId": "prod-1783439724884"
+    },
+    {
+      "id": "act-1783456653683-261",
+      "type": "product_edit",
+      "date": "2026-07-07T20:37:33.683Z",
+      "operator": "Admin",
+      "descriptionAr": "تعديل معلومات المنتج: \"ملحة 33\" (الرمز: 6112006781917)",
+      "descriptionFr": "Modification des informations du produit: \"ملحة 33\" (SKU: 6112006781917)",
+      "targetId": "prod-1783337763931"
+    },
+    {
+      "id": "act-1783456696959-541",
+      "type": "product_edit",
+      "date": "2026-07-07T20:38:16.959Z",
+      "operator": "Admin",
+      "descriptionAr": "تعديل معلومات المنتج: \"ملحة 46\" (الرمز: 6117995876730)",
+      "descriptionFr": "Modification des informations du produit: \"ملحة 46\" (SKU: 6117995876730)",
+      "targetId": "prod-1783351916014"
+    },
+    {
+      "id": "act-1783456766405-498",
+      "type": "product_add",
+      "date": "2026-07-07T20:39:26.405Z",
+      "operator": "Admin",
+      "descriptionAr": "إضافة منتج جديد: \"لانكري 10.30.10\" في صنف دواء الربيع بسعر بيع 18 DH",
+      "descriptionFr": "Ajout d'un nouveau produit: \"لانكري 10.30.10\" dans la catégorie دواء الربيع au prix de 18 DH",
+      "targetId": "prod-1783456766403"
+    },
+    {
+      "id": "act-1783456788179-136",
+      "type": "product_edit",
+      "date": "2026-07-07T20:39:48.179Z",
+      "operator": "Admin",
+      "descriptionAr": "تعديل معلومات المنتج: \"لانكري 10.30.10\" (الرمز: 6114573946480)",
+      "descriptionFr": "Modification des informations du produit: \"لانكري 10.30.10\" (SKU: 6114573946480)",
+      "targetId": "prod-1783456766403"
+    },
+    {
+      "id": "act-1783456805689-256",
+      "type": "product_add",
+      "date": "2026-07-07T20:40:05.689Z",
+      "operator": "Admin",
+      "descriptionAr": "إضافة منتج جديد: \"لانكري 15.30.10\" في صنف دواء الربيع بسعر بيع 18 DH",
+      "descriptionFr": "Ajout d'un nouveau produit: \"لانكري 15.30.10\" dans la catégorie دواء الربيع au prix de 18 DH",
+      "targetId": "prod-1783456805688"
+    },
+    {
+      "id": "act-1783456842934-815",
+      "type": "product_edit",
+      "date": "2026-07-07T20:40:42.934Z",
+      "operator": "Admin",
+      "descriptionAr": "تعديل معلومات المنتج: \"لانكري 15.30.10\" (الرمز: 6111586985807)",
+      "descriptionFr": "Modification des informations du produit: \"لانكري 15.30.10\" (SKU: 6111586985807)",
+      "targetId": "prod-1783456805688"
+    },
+    {
+      "id": "act-1783456856626-560",
+      "type": "product_edit",
+      "date": "2026-07-07T20:40:56.626Z",
+      "operator": "Admin",
+      "descriptionAr": "تعديل معلومات المنتج: \"لانكري 10.30.10\" (الرمز: 6114573946480)",
+      "descriptionFr": "Modification des informations du produit: \"لانكري 10.30.10\" (SKU: 6114573946480)",
+      "targetId": "prod-1783456766403"
+    },
+    {
+      "id": "act-1783456893277-395",
+      "type": "product_add",
+      "date": "2026-07-07T20:41:33.277Z",
+      "operator": "Admin",
+      "descriptionAr": "إضافة منتج جديد: \"لانكري 14.28.14\" في صنف لانكري بسعر بيع 3500 DH",
+      "descriptionFr": "Ajout d'un nouveau produit: \"لانكري 14.28.14\" dans la catégorie لانكري au prix de 3500 DH",
+      "targetId": "prod-1783456893276"
+    },
+    {
+      "id": "act-1783456941456-615",
+      "type": "product_add",
+      "date": "2026-07-07T20:42:21.456Z",
+      "operator": "Admin",
+      "descriptionAr": "إضافة منتج جديد: \"لانكري DAP بيض\" في صنف لانكري بسعر بيع 5500 DH",
+      "descriptionFr": "Ajout d'un nouveau produit: \"لانكري DAP بيض\" dans la catégorie لانكري au prix de 5500 DH",
+      "targetId": "prod-1783456941455"
+    },
+    {
+      "id": "act-1783456976834-359",
+      "type": "product_add",
+      "date": "2026-07-07T20:42:56.834Z",
+      "operator": "Admin",
+      "descriptionAr": "إضافة منتج جديد: \"لانكري DAP حمر\" في صنف لانكري بسعر بيع 5000 DH",
+      "descriptionFr": "Ajout d'un nouveau produit: \"لانكري DAP حمر\" dans la catégorie لانكري au prix de 5000 DH",
+      "targetId": "prod-1783456976833"
+    },
+    {
+      "id": "act-1783457035641-992",
+      "type": "product_add",
+      "date": "2026-07-07T20:43:55.642Z",
+      "operator": "Admin",
+      "descriptionAr": "إضافة منتج جديد: \"ملحة 21\" في صنف ملحة بسعر بيع 3200 DH",
+      "descriptionFr": "Ajout d'un nouveau produit: \"ملحة 21\" dans la catégorie ملحة au prix de 3200 DH",
+      "targetId": "prod-1783457035640"
+    },
+    {
+      "id": "act-1783457167488-953",
+      "type": "product_edit",
+      "date": "2026-07-07T20:46:07.488Z",
+      "operator": "Admin",
+      "descriptionAr": "تعديل معلومات المنتج: \"نخالة\" (الرمز: 6119621522896)",
+      "descriptionFr": "Modification des informations du produit: \"نخالة\" (SKU: 6119621522896)",
+      "targetId": "prod-1783439724884"
+    },
+    {
+      "id": "act-1783457202166-843",
+      "type": "client_delete",
+      "date": "2026-07-07T20:46:42.166Z",
+      "operator": "Admin",
+      "descriptionAr": "حذف الزبون: \"زهير سعدون\"",
+      "descriptionFr": "Suppression du client: \"زهير سعدون\"",
+      "targetId": "cli-1783421942243"
+    },
+    {
+      "id": "act-1783457319250-631",
+      "type": "product_add",
+      "date": "2026-07-07T20:48:39.250Z",
+      "operator": "Admin",
+      "descriptionAr": "إضافة منتج جديد: \"بنواي سمونية صفر\" في صنف علف بسعر بيع 3200 DH",
+      "descriptionFr": "Ajout d'un nouveau produit: \"بنواي سمونية صفر\" dans la catégorie علف au prix de 3200 DH",
+      "targetId": "prod-1783457319249"
+    },
+    {
+      "id": "act-1783457378911-170",
+      "type": "product_add",
+      "date": "2026-07-07T20:49:38.911Z",
+      "operator": "Admin",
+      "descriptionAr": "إضافة منتج جديد: \"مكناس سمنية 115\" في صنف علف بسعر بيع 4000 DH",
+      "descriptionFr": "Ajout d'un nouveau produit: \"مكناس سمنية 115\" dans la catégorie علف au prix de 4000 DH",
+      "targetId": "prod-1783457378910"
+    },
+    {
+      "id": "act-1783457482978-26",
+      "type": "product_add",
+      "date": "2026-07-07T20:51:22.978Z",
+      "operator": "Admin",
+      "descriptionAr": "إضافة منتج جديد: \"فول kg\" في صنف علف بسعر بيع 140 DH",
+      "descriptionFr": "Ajout d'un nouveau produit: \"فول kg\" dans la catégorie علف au prix de 140 DH",
+      "targetId": "prod-1783457482977"
+    },
+    {
+      "id": "act-1783460879572-408",
+      "type": "client_add",
+      "date": "2026-07-07T21:47:59.573Z",
+      "operator": "Admin",
+      "descriptionAr": "إضافة زبون جديد: \"عبد القادر ولد عمي\" ()",
+      "descriptionFr": "Ajout d'un nouveau client: \"عبد القادر ولد عمي\" ()",
+      "targetId": "cli-pass-1783460879570"
+    }
+  ]
+}
