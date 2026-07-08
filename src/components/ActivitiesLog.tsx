@@ -152,7 +152,7 @@ export default function ActivitiesLog({ activities, clients, products, lang, cur
   const summary = React.useMemo(() => {
     return {
       totalProducts: products.length,
-      totalClients: clients.length,
+      totalClients: clients.filter(c => !c.isPassingClient).length,
       totalDebts: clients.reduce((sum, c) => sum + (c.outstandingDebt || 0), 0),
       totalChecks: clients.reduce((sum, c) => sum + (c.postalChecks?.reduce((s: number, chk: any) => s + chk.amount, 0) || 0), 0),
     };

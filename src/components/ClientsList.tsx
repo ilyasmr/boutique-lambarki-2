@@ -541,7 +541,7 @@ export default function ClientsList({
 
 
       {/* LEFT COLUMN: Search & Database listing (7 or 8 cols in desktop) */}
-      <div className={`${selectedClient ? 'lg:col-span-7' : 'lg:col-span-12'} space-y-6 transition-all duration-350`}>
+      <div className={`${selectedClient ? 'hidden lg:block lg:col-span-7' : 'lg:col-span-12'} space-y-6 transition-all duration-350`}>
         
         <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
           
@@ -690,7 +690,7 @@ export default function ClientsList({
 
       {/* RIGHT COLUMN: Profile details inspections panel (5 cols) */}
       {selectedClient && (
-        <div className="lg:col-span-5 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col justify-between max-h-[85vh] sticky top-6 animate-fade-in">
+        <div className="col-span-1 lg:col-span-5 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col justify-between h-[85vh] lg:sticky lg:top-6 animate-fade-in z-50">
           
           {/* Header */}
           <div className="px-5 py-4.5 border-b border-gray-50 flex items-center justify-between bg-gray-50/50">

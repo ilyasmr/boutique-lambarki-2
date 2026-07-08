@@ -87,7 +87,8 @@ export default function Dashboard({
   const profitTotal = paidInvoices.reduce((sum, inv) => sum + inv.profit, 0);
   const salesCount = paidInvoices.length;
   
-  const activeClientsCount = clients.filter(c => c.totalSpent > 0).length;
+  const regularClients = clients.filter(c => !c.isPassingClient);
+  const activeClientsCount = regularClients.filter(c => c.totalSpent > 0).length;
 
   // Stock Alert calculation
   const lowStockProducts = products.filter(p => p.stock <= p.minStockAlert);
@@ -302,7 +303,7 @@ export default function Dashboard({
           <div className="space-y-1.5 flex-1 min-w-0">
             <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">{t.activeClients}</p>
             <h3 className="text-2xl font-black text-slate-900 font-mono tracking-tight truncate">
-              {activeClientsCount} <span className="text-xs font-normal text-gray-400">/ {clients.length}</span>
+              {activeClientsCount} <span className="text-xs font-normal text-gray-400">/ {regularClients.length}</span>
             </h3>
             <span className="inline-flex items-center gap-1.5 text-xs text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-md mt-1">
               <Users2 className="w-3.5 h-3.5" />
