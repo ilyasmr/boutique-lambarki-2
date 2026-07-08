@@ -275,11 +275,11 @@ export default function ClientsList({
     const newPage = parseInt(formPageNumber as any) || 0;
     
     if (newPage > 0) {
-      const pageTakenBy = clients.find(c => c.pageNumber === newPage && c.id !== editingId);
+      const pageTakenBy = clients.find(c => Number(getClientPage(c)) === newPage && c.id !== editingId);
       if (pageTakenBy) {
         alert(isRtl 
-          ? `⚠️ عذراً، رقم الصفحة ${newPage} محجوز بالفعل للزبون: ${pageTakenBy.name}`
-          : `⚠️ Le numéro de page ${newPage} est déjà utilisé par: ${pageTakenBy.name}`);
+          ? `⚠️ لا يمكن الحفظ! رقم الصفحة (${newPage}) مستعمل مسبقاً من طرف الزبون "${pageTakenBy.name}". المرجو تغيير رقم الصفحة.`
+          : `⚠️ Le numéro de page ${newPage} est déjà utilisé par: ${pageTakenBy.name}. Veuillez le changer.`);
         return;
       }
     }
