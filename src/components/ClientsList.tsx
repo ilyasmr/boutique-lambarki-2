@@ -742,41 +742,28 @@ export default function ClientsList({
             </div>
 
             {/* Page Number History Log block */}
-            <div className="p-2.5 rounded-xl border border-blue-100 bg-blue-50/30 space-y-2">
-              <div className="flex items-center justify-between">
-                <h4 className="text-[9px] font-black uppercase tracking-wide text-blue-800">
-                  {isRtl ? 'سجل الصفحات' : 'Historique des Pages'}
-                </h4>
-                <span className="px-1.5 py-0.5 rounded text-[8.5px] font-black uppercase bg-blue-100 text-blue-800">
-                  {isRtl ? `الحالية: ${getClientPage(selectedClient) || '—'}` : `Actuelle: ${getClientPage(selectedClient) || '—'}`}
+            {selectedClient.pageHistory && selectedClient.pageHistory.length > 0 && (
+              <div className="p-2 rounded-xl border border-blue-100 bg-blue-50/30 flex flex-wrap items-center gap-1.5">
+                <span className="text-[9px] font-black uppercase tracking-wide text-blue-800 mr-1">
+                  {isRtl ? 'سجل الصفحات:' : 'Historique:'}
                 </span>
-              </div>
-
-              {selectedClient.pageHistory && selectedClient.pageHistory.length > 0 ? (
-                <div className="space-y-1 pt-1.5 border-t border-blue-100/40 max-h-[70px] overflow-y-auto pr-1 custom-scrollbar">
-                  {selectedClient.pageHistory.slice().reverse().map((hist, idx) => (
-                    <div key={idx} className="bg-white p-1.5 border border-blue-50 rounded-md text-[9px] flex justify-between items-center font-mono group hover:bg-slate-50 transition-colors">
-                      <span className="font-bold text-blue-900">{isRtl ? `صفحة: ${hist.page}` : `Page: ${hist.page}`}</span>
-                      <div className="flex items-center gap-2">
-                        <span className="text-[8.5px] text-gray-400 font-sans">{new Date(hist.assignedAt).toLocaleString(lang === 'ar' ? 'ar-EG' : 'fr-FR')}</span>
-                        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <button onClick={(e) => { e.stopPropagation(); handleEditHistory(selectedClient, selectedClient.pageHistory!.length - 1 - idx, hist.page); }} className="text-blue-500 hover:text-blue-700 hover:bg-blue-50 p-1 rounded" title={isRtl ? "تعديل" : "Modifier"}>
-                            <Edit2 className="w-3 h-3" />
-                          </button>
-                          <button onClick={(e) => { e.stopPropagation(); handleDeleteHistory(selectedClient, selectedClient.pageHistory!.length - 1 - idx); }} className="text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded" title={isRtl ? "حذف" : "Supprimer"}>
-                            <Trash2 className="w-3 h-3" />
-                          </button>
-                        </div>
-                      </div>
+                {selectedClient.pageHistory.slice().reverse().map((hist, idx) => (
+                  <div key={idx} 
+                       title={new Date(hist.assignedAt).toLocaleString(lang === 'ar' ? 'ar-EG' : 'fr-FR')}
+                       className="group flex items-center bg-white px-1.5 py-0.5 border border-blue-100 rounded-md shadow-sm text-[9px] font-mono hover:border-blue-300 transition-all">
+                    <span className="font-bold text-blue-900">{hist.page}</span>
+                    <div className="flex items-center gap-0.5 ml-1.5 w-0 opacity-0 overflow-hidden group-hover:w-auto group-hover:opacity-100 transition-all duration-200">
+                      <button onClick={(e) => { e.stopPropagation(); handleEditHistory(selectedClient, selectedClient.pageHistory!.length - 1 - idx, hist.page); }} className="text-blue-500 hover:text-blue-700">
+                        <Edit2 className="w-[10px] h-[10px]" />
+                      </button>
+                      <button onClick={(e) => { e.stopPropagation(); handleDeleteHistory(selectedClient, selectedClient.pageHistory!.length - 1 - idx); }} className="text-red-500 hover:text-red-700">
+                        <Trash2 className="w-[10px] h-[10px]" />
+                      </button>
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-[9.5px] text-slate-400 font-bold leading-relaxed italic">
-                  {isRtl ? '💡 لا يوجد سجل تغيير أرقام الصفحات حالياً.' : 'Aucun historique de numéro de page enregistré.'}
-                </p>
-              )}
-            </div>
+                  </div>
+                ))}
+              </div>
+            )}
 
             {/* Postal Checks Display block */}
             {selectedClient.postalChecks && selectedClient.postalChecks.length > 0 && (
