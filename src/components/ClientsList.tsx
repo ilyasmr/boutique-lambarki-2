@@ -127,7 +127,9 @@ export default function ClientsList({
   const [formDebtDueDate, setFormDebtDueDate] = React.useState<string>('');
   const [formPageNumber, setFormPageNumber] = React.useState<number | string>('');
   
-  // Removed formHasPostalCheck and formPostalChecks as requested
+  // Postal Check Form States
+  const [formHasPostalCheck, setFormHasPostalCheck] = React.useState<boolean>(false);
+  const [formPostalChecks, setFormPostalChecks] = React.useState<PostalCheck[]>([]);
   // Temp inputs for adding a new check inside modal
   const [tempAmount, setTempAmount] = React.useState<string>('');
   const [tempEntryDate, setTempEntryDate] = React.useState<string>(todayStr);
@@ -194,7 +196,30 @@ export default function ClientsList({
     setSettlementNote('');
   };
 
-  // Removed Add/Remove check handlers from main form
+  const handleAddCheckToForm = () => {
+    const amt = parseFloat(tempAmount);
+    if (isNaN(amt) || amt <= 0) {
+      alert(isRtl ? '⚠️ يرجى إدخال مبلغ صحيح للشيك!' : '⚠️ Veuillez entrer un montant de chèque valide !');
+      return;
+    }
+    if (!tempExpiryDate) {
+      alert(isRtl ? '⚠️ تاريخ نهاية الصلاحية ضروري!' : "⚠️ L'échéance est obligatoire !");
+      return;
+    }
+    const newCheck: PostalCheck = {
+      id: `chk-${Date.now()}`,
+      amount: amt,
+      entryDate: tempEntryDate || todayStr,
+      expiryDate: tempExpiryDate
+    };
+    setFormPostalChecks(prev => [...prev, newCheck]);
+    setTempAmount('');
+  };
+
+  const handleRemoveCheckFromForm = (id: string) => {
+    setFormPostalChecks(prev => prev.filter(chk => chk.id !== id));
+  };
+
   const handleEditClick = (c: Client, e: React.MouseEvent) => {
     e.stopPropagation(); // prevent opening details
     setEditingId(c.id);
@@ -205,7 +230,8 @@ export default function ClientsList({
     setFormOutstandingDebt(c.outstandingDebt || 0);
     setFormDebtDate(c.debtDate || todayStr);
     setFormDebtDueDate(c.debtDueDate || '');
-
+    setFormHasPostalCheck(c.hasPostalCheck || (c.postalChecks && c.postalChecks.length > 0) || false);
+    setFormPostalChecks(c.postalChecks || []);
     setFormPageNumber(getClientPage(c));
     setTempAmount('');
     setTempEntryDate(todayStr);
@@ -255,7 +281,8 @@ export default function ClientsList({
     setFormOutstandingDebt(0);
     setFormDebtDate(todayStr);
     setFormDebtDueDate('');
-
+    setFormHasPostalCheck(false);
+    setFormPostalChecks([]);
     
     const maxPage = clients.reduce((max, c) => Math.max(max, Number(getClientPage(c)) || 0), 0);
     setFormPageNumber(maxPage + 1);
@@ -316,8 +343,8 @@ export default function ClientsList({
       debtDate: formOutstandingDebt > 0 ? formDebtDate : undefined,
       debtDueDate: formOutstandingDebt > 0 ? formDebtDueDate : undefined,
       debtPayments: matchedClient?.debtPayments || [],
-      hasPostalCheck: matchedClient?.hasPostalCheck || false,
-      postalChecks: matchedClient?.postalChecks || [],
+      hasPostalCheck: formHasPostalCheck && formPostalChecks.length > 0,
+      postalChecks: formHasPostalCheck ? formPostalChecks : [],
       pageNumber: newPage,
       pageHistory: updatedPageHistory
     };
@@ -998,6 +1025,97 @@ export default function ClientsList({
                   onChange={(e) => setFormAddress(e.target.value)}
                   className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold"
                 />
+              </div>
+
+              {/* Check Management in Modal */}
+              <div className="p-3 bg-indigo-50/40 rounded-xl border border-indigo-100">
+                <label className="flex items-center gap-3 cursor-pointer select-none">
+                  <div className="relative">
+                    <input
+                      type="checkbox"
+                      checked={formHasPostalCheck}
+                      onChange={(e) => setFormHasPostalCheck(e.target.checked)}
+                      className="sr-only"
+                    />
+                    <div className={`w-10 h-6 bg-gray-200 rounded-full shadow-inner transition-colors ${formHasPostalCheck ? 'bg-indigo-500' : ''}`}></div>
+                    <div className={`absolute w-4 h-4 bg-white rounded-full shadow top-1 transition-transform ${formHasPostalCheck ? 'translate-x-5' : 'translate-x-1'}`}></div>
+                  </div>
+                  <span className="text-xs font-bold text-indigo-900">
+                    {isRtl ? 'إضافة شيكات لهذا الزبون؟' : 'Ajouter des chèques ?'}
+                  </span>
+                </label>
+
+                {formHasPostalCheck && (
+                  <div className="mt-4 space-y-3">
+                    {formPostalChecks.length > 0 && (
+                      <div className="space-y-2">
+                        <label className="text-xxs text-slate-400 font-bold uppercase">{isRtl ? 'الشيكات المسجلة' : 'Chèques enregistrés'}</label>
+                        {formPostalChecks.map(chk => {
+                          const status = getCheckStatus(chk.expiryDate);
+                          return (
+                            <div key={chk.id} className="bg-white p-2 border border-indigo-100 rounded-lg flex justify-between items-center shadow-sm">
+                              <div>
+                                <span className="font-extrabold text-indigo-900 font-mono text-xs">{chk.amount.toFixed(2)}</span>
+                                <div className="text-[9px] text-gray-500 flex gap-2 font-mono mt-0.5">
+                                  <span>{chk.entryDate}</span>
+                                  <span className="text-indigo-400">»</span>
+                                  <span className="font-bold">{chk.expiryDate}</span>
+                                </div>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveCheckFromForm(chk.id)}
+                                className="p-1.5 hover:bg-rose-50 text-rose-500 rounded-md transition"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                    <div className="p-3 bg-white border border-indigo-100 rounded-lg space-y-2 shadow-sm">
+                      <label className="text-xxs text-indigo-600 font-black uppercase tracking-wider block">{isRtl ? 'شيك جديد' : 'Nouveau chèque'}</label>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="col-span-2">
+                          <input
+                            type="number" min="0" step="0.01"
+                            value={tempAmount}
+                            onChange={(e) => setTempAmount(e.target.value)}
+                            placeholder={isRtl ? 'المبلغ' : 'Montant'}
+                            className="w-full p-2 bg-gray-50 border border-gray-200 rounded focus:bg-white text-xs font-mono font-bold"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[9px] text-gray-400 mb-0.5 block">{isRtl ? 'الإصدار' : 'Émis'}</label>
+                          <input
+                            type="date"
+                            value={tempEntryDate}
+                            onChange={(e) => setTempEntryDate(e.target.value)}
+                            className="w-full p-2 bg-gray-50 border border-gray-200 rounded text-xs"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[9px] text-gray-400 mb-0.5 block">{isRtl ? 'الاستحقاق' : 'Échéance'}</label>
+                          <input
+                            type="date"
+                            value={tempExpiryDate}
+                            onChange={(e) => setTempExpiryDate(e.target.value)}
+                            className="w-full p-2 bg-gray-50 border border-gray-200 rounded text-xs"
+                          />
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleAddCheckToForm}
+                        className="w-full mt-2 py-2 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 font-bold text-xs rounded transition flex items-center justify-center gap-1"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        {isRtl ? 'إضافة الشيك' : 'Ajouter chèque'}
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Action buttons */}
