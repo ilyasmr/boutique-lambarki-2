@@ -336,7 +336,7 @@ export default function ClientsList({
   // Search Filter & Sort
   const filteredClients = React.useMemo(() => {
     const list = clients.filter(c => {
-      if (c.isPassingClient) return false;
+      if (c.isPassingClient || c.id.startsWith('cli-pass-')) return false;
       const nameMatch = (c.name || '').toLowerCase().includes(searchTerm.toLowerCase());
       const phoneMatch = (c.phone || '').includes(searchTerm);
       const addressMatch = (c.address || '').toLowerCase().includes(searchTerm.toLowerCase());

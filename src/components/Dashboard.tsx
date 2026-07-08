@@ -87,7 +87,7 @@ export default function Dashboard({
   const profitTotal = paidInvoices.reduce((sum, inv) => sum + inv.profit, 0);
   const salesCount = paidInvoices.length;
   
-  const regularClients = clients.filter(c => !c.isPassingClient);
+  const regularClients = clients.filter(c => !c.isPassingClient && !c.id.startsWith('cli-pass-'));
   const activeClientsCount = regularClients.filter(c => c.totalSpent > 0).length;
 
   // Stock Alert calculation

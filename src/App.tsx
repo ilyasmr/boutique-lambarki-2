@@ -10,6 +10,7 @@ import {
 } from './types';
 import { api } from './api';
 import { Capacitor } from '@capacitor/core';
+import { App as CapacitorApp } from '@capacitor/app';
 import { CapacitorUpdater } from '@capgo/capacitor-updater';
 import { 
   initialUsers, 
@@ -245,6 +246,26 @@ export default function App() {
       window.removeEventListener('offline', handleOffline);
     };
   }, []);
+
+  // Handle Capacitor App exit confirmation
+  React.useEffect(() => {
+    if (Capacitor.isNativePlatform()) {
+      const backListener = CapacitorApp.addListener('backButton', ({ canGoBack }) => {
+        if (!canGoBack) {
+          const confirmMessage = lang === 'ar' ? 'هل أنت متأكد أنك تريد الخروج من التطبيق؟' : 'Voulez-vous vraiment quitter l\'application ?';
+          if (window.confirm(confirmMessage)) {
+            CapacitorApp.exitApp();
+          }
+        } else {
+          window.history.back();
+        }
+      });
+
+      return () => {
+        backListener.then(listener => listener.remove());
+      };
+    }
+  }, [lang]);
 
   // Trigger sync when coming online
   React.useEffect(() => {

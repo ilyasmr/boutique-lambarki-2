@@ -70,8 +70,8 @@ export default function DebtsList({
     return debtors.filter(c => {
       const matchSearch = (c.name || '').toLowerCase().includes(searchTerm.toLowerCase()) || (c.phone || '').includes(searchTerm);
       let matchType = true;
-      if (filterType === 'regular') matchType = !c.isPassingClient;
-      if (filterType === 'passing') matchType = !!c.isPassingClient;
+      if (filterType === 'regular') matchType = !(c.isPassingClient || c.id.startsWith('cli-pass-'));
+      if (filterType === 'passing') matchType = !!(c.isPassingClient || c.id.startsWith('cli-pass-'));
       
       return matchSearch && matchType;
     }).sort((a, b) => {
@@ -440,7 +440,7 @@ export default function DebtsList({
                         <p className="text-xs text-slate-500 font-mono mt-0.5">{c.phone || (isRtl ? 'بدون رقم' : 'Pas de num')}</p>
                       </td>
                       <td className="py-4 px-6">
-                        {c.isPassingClient ? (
+                        {c.isPassingClient || c.id.startsWith('cli-pass-') ? (
                           <span className="px-2 py-1 bg-amber-50 text-amber-700 border border-amber-200/60 rounded-md text-[10px] font-black uppercase">
                             {isRtl ? 'عابر' : 'Passager'}
                           </span>
@@ -513,7 +513,7 @@ export default function DebtsList({
                           >
                             <History className="w-4 h-4" />
                           </button>
-                          {c.isPassingClient && currentUser?.role === 'admin' && (
+                          {(c.isPassingClient || c.id.startsWith('cli-pass-')) && currentUser?.role === 'admin' && (
                              <button
                                onClick={() => {
                                  if (window.confirm(isRtl ? 'هل أنت متأكد من حذف دين الزبون العابر؟' : 'Confirmer la suppression ?')) {
@@ -563,7 +563,7 @@ export default function DebtsList({
                   className="w-full p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 outline-none bg-white"
                 >
                   <option value="NEW_PASSING">{isRtl ? '-- زبون عابر جديد --' : '-- Nouveau Passager --'}</option>
-                  {clients.filter(c => !c.isPassingClient).map(c => (
+                  {clients.filter(c => !(c.isPassingClient || c.id.startsWith('cli-pass-'))).map(c => (
                     <option key={c.id} value={c.id}>{c.name || 'Sans Nom'} {c.phone ? `(${c.phone})` : ''}</option>
                   ))}
                 </select>
