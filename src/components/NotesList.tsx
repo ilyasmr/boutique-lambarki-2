@@ -177,7 +177,7 @@ export default function NotesList({
                     <h3 className="font-black text-slate-800 text-lg">{note.personName}</h3>
                     <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 mt-0.5">
                       <Calendar className="w-3 h-3" />
-                      {new Date(note.date).toLocaleString(isRtl ? 'ar-EG' : 'fr-FR', {
+                      {new Date(note.date).toLocaleString(isRtl ? 'ar-MA' : 'fr-FR', {
                         day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute:'2-digit'
                       })}
                     </div>
