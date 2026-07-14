@@ -15,7 +15,8 @@ import {
   ShoppingBag,
   Image,
   Barcode,
-  AlertTriangle
+  AlertTriangle,
+  Grid
 } from 'lucide-react';
 
 interface PosCaisseProps {
