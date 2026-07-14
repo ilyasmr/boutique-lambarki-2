@@ -955,6 +955,16 @@ export default function App() {
             currentUser={currentUser}
           />
         );
+      case 'notes':
+        return (
+          <NotesList
+            notes={notes}
+            lang={lang}
+            onAddNote={(note) => setNotes([...notes, note])}
+            onUpdateNote={(note) => setNotes(notes.map(n => n.id === note.id ? note : n))}
+            onDeleteNote={(id) => setNotes(notes.filter(n => n.id !== id))}
+          />
+        );
       case 'settings':
         return (
           <Settings
