@@ -76,6 +76,13 @@ export const api = {
     delete: (id: string) => request(`/activities/${id}`, { method: 'DELETE' }),
   },
 
+  notes: {
+    getAll: () => request<any[]>('/notes'),
+    create: (data: any) => request('/notes', { method: 'POST', body: JSON.stringify(data) }),
+    update: (id: string, data: any) => request(`/notes/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+    delete: (id: string) => request(`/notes/${id}`, { method: 'DELETE' }),
+  },
+
   system: {
     clearAll: () => request<{ status: string; message: string }>('/system/clear', { method: 'POST' }),
   },

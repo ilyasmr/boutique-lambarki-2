@@ -43,7 +43,7 @@ import { Key, Building, Sparkles, Search, Package, Users, FileText, X, Menu, Eye
 
 interface SyncItem {
   id: string;
-  entity: 'products' | 'clients' | 'invoices' | 'movements' | 'activities' | 'users';
+  entity: 'products' | 'clients' | 'invoices' | 'movements' | 'activities' | 'users' | 'notes';
   action: 'create' | 'update' | 'delete';
   payload: any;
   timestamp: number;
@@ -82,15 +82,11 @@ export default function App() {
   const [activities, setActivities] = React.useState<SystemActivity[]>([]);
   const [notes, setNotes] = React.useState<Note[]>(() => {
     try {
-      return JSON.parse(localStorage.getItem('app_notes') || '[]');
+      return JSON.parse(localStorage.getItem('cached_notes') || '[]');
     } catch (e) {
       return [];
     }
   });
-
-  React.useEffect(() => {
-    localStorage.setItem('app_notes', JSON.stringify(notes));
-  }, [notes]);
 
   // Simulation Login screen helper states
   const [loginUsername, setLoginUsername] = React.useState('');
@@ -189,13 +185,14 @@ export default function App() {
       
       // Refresh all data from API after successful sync
       if (updatedQueue.length === 0) {
-        const [loadedUsers, loadedClients, loadedProducts, loadedInvoices, loadedMovements, loadedActivities] = await Promise.all([
+        const [loadedUsers, loadedClients, loadedProducts, loadedInvoices, loadedMovements, loadedActivities, loadedNotes] = await Promise.all([
           api.users.getAll(),
           api.clients.getAll(),
           api.products.getAll(),
           api.invoices.getAll(),
           api.movements.getAll(),
           api.activities.getAll(),
+          api.notes.getAll(),
         ]);
         setUsers(loadedUsers);
         setClients(loadedClients);
@@ -203,6 +200,7 @@ export default function App() {
         setInvoices(loadedInvoices);
         setStockMovements(loadedMovements);
         setActivities(loadedActivities);
+        setNotes(loadedNotes);
         
         localStorage.setItem('cached_users', JSON.stringify(loadedUsers));
         localStorage.setItem('cached_clients', JSON.stringify(loadedClients));
@@ -210,6 +208,7 @@ export default function App() {
         localStorage.setItem('cached_invoices', JSON.stringify(loadedInvoices));
         localStorage.setItem('cached_movements', JSON.stringify(loadedMovements));
         localStorage.setItem('cached_activities', JSON.stringify(loadedActivities));
+        localStorage.setItem('cached_notes', JSON.stringify(loadedNotes));
       }
     } catch (e) {
       console.error('Error during database sync:', e);
@@ -220,7 +219,7 @@ export default function App() {
 
   // Enqueue a sync action
   const enqueueSync = async (
-    entity: 'products' | 'clients' | 'invoices' | 'movements' | 'activities' | 'users',
+    entity: 'products' | 'clients' | 'invoices' | 'movements' | 'activities' | 'users' | 'notes',
     action: 'create' | 'update' | 'delete',
     payload: any
   ) => {
@@ -293,13 +292,14 @@ export default function App() {
   React.useEffect(() => {
     const loadAll = async () => {
       try {
-        const [loadedUsers, loadedClients, loadedProducts, loadedInvoices, loadedMovements, loadedActivities] = await Promise.all([
+        const [loadedUsers, loadedClients, loadedProducts, loadedInvoices, loadedMovements, loadedActivities, loadedNotes] = await Promise.all([
           api.users.getAll(),
           api.clients.getAll(),
           api.products.getAll(),
           api.invoices.getAll(),
           api.movements.getAll(),
           api.activities.getAll(),
+          api.notes.getAll(),
         ]);
 
         setUsers(loadedUsers);
@@ -308,6 +308,7 @@ export default function App() {
         setInvoices(loadedInvoices);
         setStockMovements(loadedMovements);
         setActivities(loadedActivities);
+        setNotes(loadedNotes);
 
         localStorage.setItem('cached_users', JSON.stringify(loadedUsers));
         localStorage.setItem('cached_clients', JSON.stringify(loadedClients));
@@ -315,6 +316,7 @@ export default function App() {
         localStorage.setItem('cached_invoices', JSON.stringify(loadedInvoices));
         localStorage.setItem('cached_movements', JSON.stringify(loadedMovements));
         localStorage.setItem('cached_activities', JSON.stringify(loadedActivities));
+        localStorage.setItem('cached_notes', JSON.stringify(loadedNotes));
 
         const savedUser = localStorage.getItem('dolibarr_current_user');
         if (savedUser) {
@@ -334,6 +336,7 @@ export default function App() {
         const cachedInvoices = JSON.parse(localStorage.getItem('cached_invoices') || '[]');
         const cachedMovements = JSON.parse(localStorage.getItem('cached_movements') || '[]');
         const cachedActivities = JSON.parse(localStorage.getItem('cached_activities') || '[]');
+        const cachedNotes = JSON.parse(localStorage.getItem('cached_notes') || '[]');
 
         setUsers(cachedUsers);
         setClients(cachedClients);
@@ -341,6 +344,7 @@ export default function App() {
         setInvoices(cachedInvoices);
         setStockMovements(cachedMovements);
         setActivities(cachedActivities);
+        setNotes(cachedNotes);
 
         const savedUser = localStorage.getItem('dolibarr_current_user');
         if (savedUser) {
@@ -960,9 +964,18 @@ export default function App() {
           <NotesList
             notes={notes}
             lang={lang}
-            onAddNote={(note) => setNotes([...notes, note])}
-            onUpdateNote={(note) => setNotes(notes.map(n => n.id === note.id ? note : n))}
-            onDeleteNote={(id) => setNotes(notes.filter(n => n.id !== id))}
+            onAddNote={(note) => {
+              setNotes([...notes, note]);
+              enqueueSync('notes', 'create', note);
+            }}
+            onUpdateNote={(note) => {
+              setNotes(notes.map(n => n.id === note.id ? note : n));
+              enqueueSync('notes', 'update', note);
+            }}
+            onDeleteNote={(id) => {
+              setNotes(notes.filter(n => n.id !== id));
+              enqueueSync('notes', 'delete', id);
+            }}
           />
         );
       case 'settings':

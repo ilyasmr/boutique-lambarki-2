@@ -102,6 +102,14 @@ async function setupDatabase() {
         target_id TEXT
       );
 
+      CREATE TABLE IF NOT EXISTS notes (
+        id TEXT PRIMARY KEY,
+        person_name TEXT NOT NULL,
+        items JSONB DEFAULT '[]',
+        date TEXT,
+        version INTEGER DEFAULT 1
+      );
+
       ALTER TABLE clients ADD COLUMN IF NOT EXISTS page_number INTEGER DEFAULT 0;
       ALTER TABLE clients ADD COLUMN IF NOT EXISTS page_history JSONB DEFAULT '[]';
     `);

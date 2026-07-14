@@ -9,6 +9,7 @@ import { getInvoices, createInvoice, updateInvoice, deleteInvoice } from './rout
 import { getUsers, createUser, updateUser, deleteUser } from './routes/users.js';
 import { getMovements, createMovement, deleteMovement, updateMovement } from './routes/movements.js';
 import { getActivities, createActivity, deleteActivity, updateActivity } from './routes/activities.js';
+import { getNotes, createNote, deleteNote, updateNote } from './routes/notes.js';
 
 dotenv.config();
 
@@ -59,6 +60,12 @@ app.post('/api/activities', createActivity);
 app.put('/api/activities/:id', updateActivity);
 app.delete('/api/activities/:id', deleteActivity);
 
+// ── Notes ─────────────────────────────────────────────
+app.get('/api/notes', getNotes);
+app.post('/api/notes', createNote);
+app.put('/api/notes/:id', updateNote);
+app.delete('/api/notes/:id', deleteNote);
+
 // ── System Management ─────────────────────────────────
 app.post('/api/system/clear', async (req, res) => {
   try {
@@ -67,6 +74,7 @@ app.post('/api/system/clear', async (req, res) => {
     await pool.query('DELETE FROM invoices');
     await pool.query('DELETE FROM products');
     await pool.query('DELETE FROM clients');
+    await pool.query('DELETE FROM notes');
     await pool.query("DELETE FROM users WHERE username NOT IN ('admin', 'caissier', 'rachida')");
     res.json({ status: 'success', message: 'All business data cleared' });
   } catch (err) {
