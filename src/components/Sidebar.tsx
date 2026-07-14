@@ -16,6 +16,7 @@ import {
   Building,
   Coins,
   AlertCircle,
+  StickyNote,
   Activity,
   X
 } from 'lucide-react';
@@ -53,6 +54,7 @@ export default function Sidebar({
     { id: 'products', label: t.products, icon: ShoppingBasket, roles: ['admin', 'cashier'] },
     { id: 'clients', label: t.clients, icon: Users, roles: ['admin', 'cashier'] },
     { id: 'debts', label: t.debts, icon: AlertCircle, roles: ['admin', 'cashier'], badge: alertCount },
+    { id: 'notes', label: t.notes, icon: StickyNote, roles: ['admin', 'cashier'] },
     { id: 'activities', label: t.activities, icon: Activity, roles: ['admin'] },
     { id: 'settings', label: t.settings, icon: Settings, roles: ['admin'] },
   ];

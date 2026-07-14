@@ -259,7 +259,7 @@ export default function DebtsList({
   };
 
   return (
-    <div className="h-full flex flex-col p-4 sm:p-6 lg:p-8 space-y-6" dir={isRtl ? 'rtl' : 'ltr'}>
+    <div className="flex flex-col p-4 sm:p-6 lg:p-8 space-y-6" dir={isRtl ? 'rtl' : 'ltr'}>
       {/* HEADER */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -328,7 +328,7 @@ export default function DebtsList({
       </div>
 
       {/* DEBTS TABLE */}
-      <div className="flex-1 bg-white rounded-2xl border border-slate-100/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden flex flex-col">
+      <div className="bg-white rounded-2xl border border-slate-100/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden flex flex-col">
         {/* MOBILE CARDS VIEW */}
         <div className="md:hidden flex flex-col gap-3 p-4 overflow-y-auto">
           {filteredDebtors.length === 0 ? (
@@ -406,7 +406,7 @@ export default function DebtsList({
         </div>
 
         {/* DESKTOP TABLE VIEW */}
-        <div className="hidden md:block overflow-x-auto flex-1">
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left">
             <thead>
               <tr className="bg-slate-50 border-b border-slate-100 text-xs font-bold uppercase text-slate-500">

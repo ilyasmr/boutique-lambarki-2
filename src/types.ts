@@ -11,6 +11,20 @@ export interface User {
   version?: number;
 }
 
+export interface NoteItem {
+  id: string;
+  name: string;
+  completed?: boolean;
+}
+
+export interface Note {
+  id: string;
+  personName: string;
+  items: NoteItem[];
+  date: string;
+}
+
+
 export interface PurchaseRecord {
   invoiceId: string;
   date: string;
@@ -140,6 +154,7 @@ export interface AppTranslation {
   products: string;
   clients: string;
   debts: string;
+  notes: string;
   stock: string;
   sales: string;
   activities: string;

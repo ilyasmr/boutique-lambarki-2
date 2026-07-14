@@ -6,7 +6,8 @@ import {
   Invoice, 
   StockMovement, 
   UserRole,
-  SystemActivity
+  SystemActivity,
+  Note
 } from './types';
 import { api } from './api';
 import { Capacitor } from '@capacitor/core';
@@ -36,6 +37,7 @@ import Account from './components/Account';
 import InvoicesList from './components/InvoicesList';
 import DebtsList from './components/DebtsList';
 import ActivitiesLog from './components/ActivitiesLog';
+import NotesList from './components/NotesList';
 
 import { Key, Building, Sparkles, Search, Package, Users, FileText, X, Menu, Eye, EyeOff, Bell, AlertCircle } from 'lucide-react';
 
@@ -78,6 +80,17 @@ export default function App() {
   const [invoices, setInvoices] = React.useState<Invoice[]>([]);
   const [stockMovements, setStockMovements] = React.useState<StockMovement[]>([]);
   const [activities, setActivities] = React.useState<SystemActivity[]>([]);
+  const [notes, setNotes] = React.useState<Note[]>(() => {
+    try {
+      return JSON.parse(localStorage.getItem('app_notes') || '[]');
+    } catch (e) {
+      return [];
+    }
+  });
+
+  React.useEffect(() => {
+    localStorage.setItem('app_notes', JSON.stringify(notes));
+  }, [notes]);
 
   // Simulation Login screen helper states
   const [loginUsername, setLoginUsername] = React.useState('');
