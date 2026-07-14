@@ -199,7 +199,7 @@ export default function NotesList({
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
-                  </div>>
+                  </div>
                 </div>
 
                 <div className="space-y-2">
