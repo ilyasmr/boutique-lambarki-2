@@ -32,6 +32,7 @@ export default function NotesList({
   const t = translations[lang];
 
   const [searchTerm, setSearchTerm] = useState('');
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   
   // New Note State
   const [personName, setPersonName] = useState('');
@@ -76,6 +77,7 @@ export default function NotesList({
     // Reset form
     setPersonName('');
     setItems([{ id: `item-${Date.now()}`, name: '' }]);
+    setIsAddModalOpen(false);
   };
 
   const toggleItemCompletion = (noteId: string, itemId: string) => {
@@ -113,16 +115,105 @@ export default function NotesList({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1">
-        
-        {/* NEW NOTE FORM */}
-        <div className="col-span-1">
-          <div className="bg-white p-5 rounded-3xl border border-indigo-100 shadow-[0_8px_30px_rgb(0,0,0,0.06)] sticky top-6">
-            <h2 className="text-lg font-black text-slate-800 mb-4 flex items-center gap-2">
-              <Plus className="w-5 h-5 text-indigo-500" />
-              {isRtl ? 'إضافة كتابة جديدة' : 'Ajouter une note'}
-            </h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
+      {/* TOOLBAR */}
+      <div className="flex flex-col md:flex-row justify-between gap-4 bg-white p-4 rounded-2xl border border-slate-100/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+        <div className="flex-1 relative w-full md:w-96">
+          <Search className={`absolute ${isRtl ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400`} />
+          <input
+            type="text"
+            placeholder={isRtl ? 'بحث في الكتابات...' : 'Rechercher dans les notes...'}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className={`w-full py-2.5 bg-slate-50 text-sm text-slate-800 rounded-xl border border-slate-200 outline-none focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all ${
+              isRtl ? 'pl-4 pr-11' : 'pr-4 pl-11'
+            }`}
+          />
+        </div>
+        <button
+          onClick={() => setIsAddModalOpen(true)}
+          className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white rounded-xl text-xs font-black shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 shrink-0"
+        >
+          <Plus className="w-4 h-4" />
+          <span>{isRtl ? 'إضافة كتابة جديدة' : 'Nouvelle Note'}</span>
+        </button>
+      </div>
+
+      {/* NOTES LIST */}
+      <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar pb-10">
+        {filteredNotes.length === 0 ? (
+          <div className="py-16 text-center text-slate-400 bg-white rounded-3xl border border-slate-100 shadow-sm mt-4">
+            <StickyNote className="w-12 h-12 mx-auto text-slate-200 mb-3" />
+            <p className="font-semibold text-sm">{isRtl ? 'لا توجد كتابات مسجلة' : 'Aucune note enregistrée'}</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+            {filteredNotes.map(note => (
+              <div key={note.id} className="bg-white p-5 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] transition-all group">
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <h3 className="font-black text-slate-800 text-lg">{note.personName}</h3>
+                    <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 mt-0.5">
+                      <Calendar className="w-3 h-3" />
+                      {new Date(note.date).toLocaleString(isRtl ? 'ar-EG' : 'fr-FR', {
+                        day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute:'2-digit'
+                      })}
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => {
+                      if (window.confirm(isRtl ? 'هل تريد حذف هذه الكتابة؟' : 'Supprimer cette note ?')) {
+                        onDeleteNote(note.id);
+                      }
+                    }}
+                    className="p-1.5 text-rose-300 hover:text-rose-500 hover:bg-rose-50 rounded-lg opacity-0 group-hover:opacity-100 transition-all"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+
+                <div className="space-y-2">
+                  {note.items.map(item => (
+                    <div 
+                      key={item.id} 
+                      onClick={() => toggleItemCompletion(note.id, item.id)}
+                      className={`flex items-center justify-between p-2.5 rounded-xl border cursor-pointer transition-all ${
+                        item.completed 
+                          ? 'bg-emerald-50 border-emerald-100 text-emerald-600' 
+                          : 'bg-slate-50 border-transparent hover:border-indigo-100 text-slate-700'
+                      }`}
+                    >
+                      <span className={`text-sm font-semibold flex-1 ${item.completed ? 'line-through opacity-70' : ''}`}>
+                        {item.name}
+                      </span>
+                      <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 border ${
+                        item.completed ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-slate-300 bg-white'
+                      }`}>
+                        {item.completed && <Check className="w-3 h-3" />}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* ADD NOTE MODAL */}
+      {isAddModalOpen && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[60] animate-fade-in">
+          <div className="bg-white rounded-3xl shadow-xl w-full max-w-md max-h-[90vh] flex flex-col overflow-hidden border border-indigo-100">
+            <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50 shrink-0">
+              <h2 className="text-lg font-black text-slate-800 flex items-center gap-2">
+                <Plus className="w-5 h-5 text-indigo-500" />
+                {isRtl ? 'إضافة كتابة جديدة' : 'Ajouter une note'}
+              </h2>
+              <button type="button" onClick={() => setIsAddModalOpen(false)} className="p-1.5 text-slate-400 hover:bg-slate-200 rounded-lg transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <form onSubmit={handleSubmit} className="p-5 space-y-4 overflow-y-auto flex-1 custom-scrollbar">
               <div>
                 <label className="block text-xs font-bold text-slate-500 mb-1.5 flex items-center gap-1">
                   <User className="w-3.5 h-3.5" />
@@ -174,7 +265,7 @@ export default function NotesList({
                 </button>
               </div>
 
-              <div className="pt-2">
+              <div className="pt-4">
                 <button
                   type="submit"
                   className="w-full py-3.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 active:scale-[0.98] text-white rounded-xl text-sm font-black shadow-lg shadow-indigo-500/30 transition-all"
@@ -185,84 +276,8 @@ export default function NotesList({
             </form>
           </div>
         </div>
+      )}
 
-        {/* NOTES LIST */}
-        <div className="col-span-1 lg:col-span-2 flex flex-col">
-          <div className="mb-4 relative">
-            <Search className={`absolute ${isRtl ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400`} />
-            <input
-              type="text"
-              placeholder={isRtl ? 'بحث في الكتابات...' : 'Rechercher dans les notes...'}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className={`w-full py-3 bg-white text-sm text-slate-800 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all ${
-                isRtl ? 'pl-4 pr-11' : 'pr-4 pl-11'
-              }`}
-            />
-          </div>
-
-          <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar space-y-4 pb-10">
-            {filteredNotes.length === 0 ? (
-              <div className="py-16 text-center text-slate-400 bg-white/50 rounded-3xl border border-dashed border-slate-200">
-                <StickyNote className="w-12 h-12 mx-auto text-slate-200 mb-3" />
-                <p className="font-semibold text-sm">{isRtl ? 'لا توجد كتابات مسجلة' : 'Aucune note enregistrée'}</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {filteredNotes.map(note => (
-                  <div key={note.id} className="bg-white p-5 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] transition-all group">
-                    <div className="flex justify-between items-start mb-4">
-                      <div>
-                        <h3 className="font-black text-slate-800 text-lg">{note.personName}</h3>
-                        <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 mt-0.5">
-                          <Calendar className="w-3 h-3" />
-                          {new Date(note.date).toLocaleString(isRtl ? 'ar-EG' : 'fr-FR', {
-                            day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute:'2-digit'
-                          })}
-                        </div>
-                      </div>
-                      <button
-                        onClick={() => {
-                          if (window.confirm(isRtl ? 'هل تريد حذف هذه الكتابة؟' : 'Supprimer cette note ?')) {
-                            onDeleteNote(note.id);
-                          }
-                        }}
-                        className="p-1.5 text-rose-300 hover:text-rose-500 hover:bg-rose-50 rounded-lg opacity-0 group-hover:opacity-100 transition-all"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-
-                    <div className="space-y-2">
-                      {note.items.map(item => (
-                        <div 
-                          key={item.id} 
-                          onClick={() => toggleItemCompletion(note.id, item.id)}
-                          className={`flex items-center justify-between p-2.5 rounded-xl border cursor-pointer transition-all ${
-                            item.completed 
-                              ? 'bg-emerald-50 border-emerald-100 text-emerald-600' 
-                              : 'bg-slate-50 border-transparent hover:border-indigo-100 text-slate-700'
-                          }`}
-                        >
-                          <span className={`text-sm font-semibold flex-1 ${item.completed ? 'line-through opacity-70' : ''}`}>
-                            {item.name}
-                          </span>
-                          <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 border ${
-                            item.completed ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-slate-300 bg-white'
-                          }`}>
-                            {item.completed && <Check className="w-3 h-3" />}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-
-      </div>
     </div>
   );
 }
