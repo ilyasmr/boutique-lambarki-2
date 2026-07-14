@@ -10,7 +10,8 @@ import {
   Search,
   ShoppingCart,
   User,
-  Calendar
+  Calendar,
+  Pencil
 } from 'lucide-react';
 
 interface NotesListProps {
@@ -32,11 +33,26 @@ export default function NotesList({
   const t = translations[lang];
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingNoteId, setEditingNoteId] = useState<string | null>(null);
   
-  // New Note State
+  // Form State
   const [personName, setPersonName] = useState('');
   const [items, setItems] = useState<NoteItem[]>([{ id: `item-${Date.now()}`, name: '' }]);
+
+  const openAddModal = () => {
+    setEditingNoteId(null);
+    setPersonName('');
+    setItems([{ id: `item-${Date.now()}`, name: '' }]);
+    setIsModalOpen(true);
+  };
+
+  const openEditModal = (note: Note) => {
+    setEditingNoteId(note.id);
+    setPersonName(note.personName);
+    setItems(note.items.map(item => ({ ...item })));
+    setIsModalOpen(true);
+  };
 
   const handleItemChange = (id: string, value: string) => {
     setItems(items.map(item => item.id === id ? { ...item, name: value } : item));
@@ -65,19 +81,26 @@ export default function NotesList({
       return;
     }
 
-    const newNote: Note = {
-      id: `note-${Date.now()}`,
-      personName: personName.trim(),
-      items: validItems,
-      date: new Date().toISOString()
-    };
-
-    onAddNote(newNote);
+    if (editingNoteId) {
+      const existingNote = notes.find(n => n.id === editingNoteId);
+      if (existingNote) {
+        onUpdateNote({
+          ...existingNote,
+          personName: personName.trim(),
+          items: validItems,
+        });
+      }
+    } else {
+      const newNote: Note = {
+        id: `note-${Date.now()}`,
+        personName: personName.trim(),
+        items: validItems,
+        date: new Date().toISOString()
+      };
+      onAddNote(newNote);
+    }
     
-    // Reset form
-    setPersonName('');
-    setItems([{ id: `item-${Date.now()}`, name: '' }]);
-    setIsAddModalOpen(false);
+    setIsModalOpen(false);
   };
 
   const toggleItemCompletion = (noteId: string, itemId: string) => {
@@ -130,7 +153,7 @@ export default function NotesList({
           />
         </div>
         <button
-          onClick={() => setIsAddModalOpen(true)}
+          onClick={openAddModal}
           className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white rounded-xl text-xs font-black shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 shrink-0"
         >
           <Plus className="w-4 h-4" />
@@ -159,16 +182,24 @@ export default function NotesList({
                       })}
                     </div>
                   </div>
-                  <button
-                    onClick={() => {
-                      if (window.confirm(isRtl ? 'هل تريد حذف هذه الكتابة؟' : 'Supprimer cette note ?')) {
-                        onDeleteNote(note.id);
-                      }
-                    }}
-                    className="p-1.5 text-rose-300 hover:text-rose-500 hover:bg-rose-50 rounded-lg opacity-0 group-hover:opacity-100 transition-all"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                  <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all">
+                    <button
+                      onClick={() => openEditModal(note)}
+                      className="p-1.5 text-indigo-300 hover:text-indigo-500 hover:bg-indigo-50 rounded-lg transition-colors"
+                    >
+                      <Pencil className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (window.confirm(isRtl ? 'هل تريد حذف هذه الكتابة؟' : 'Supprimer cette note ?')) {
+                          onDeleteNote(note.id);
+                        }
+                      }}
+                      className="p-1.5 text-rose-300 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition-colors"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>>
                 </div>
 
                 <div className="space-y-2">
@@ -199,16 +230,18 @@ export default function NotesList({
         )}
       </div>
 
-      {/* ADD NOTE MODAL */}
-      {isAddModalOpen && (
+      {/* MODAL */}
+      {isModalOpen && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-[60] animate-fade-in">
           <div className="bg-white rounded-3xl shadow-xl w-full max-w-md max-h-[90vh] flex flex-col overflow-hidden border border-indigo-100">
             <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50 shrink-0">
               <h2 className="text-lg font-black text-slate-800 flex items-center gap-2">
-                <Plus className="w-5 h-5 text-indigo-500" />
-                {isRtl ? 'إضافة كتابة جديدة' : 'Ajouter une note'}
+                {editingNoteId ? <Pencil className="w-5 h-5 text-indigo-500" /> : <Plus className="w-5 h-5 text-indigo-500" />}
+                {editingNoteId 
+                  ? (isRtl ? 'تعديل الكتابة' : 'Modifier la note') 
+                  : (isRtl ? 'إضافة كتابة جديدة' : 'Ajouter une note')}
               </h2>
-              <button type="button" onClick={() => setIsAddModalOpen(false)} className="p-1.5 text-slate-400 hover:bg-slate-200 rounded-lg transition-colors">
+              <button type="button" onClick={() => setIsModalOpen(false)} className="p-1.5 text-slate-400 hover:bg-slate-200 rounded-lg transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -270,7 +303,9 @@ export default function NotesList({
                   type="submit"
                   className="w-full py-3.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 active:scale-[0.98] text-white rounded-xl text-sm font-black shadow-lg shadow-indigo-500/30 transition-all"
                 >
-                  {isRtl ? 'حفظ الكتابة' : 'Enregistrer la note'}
+                  {editingNoteId
+                    ? (isRtl ? 'حفظ التعديلات' : 'Enregistrer les modifications')
+                    : (isRtl ? 'حفظ الكتابة' : 'Enregistrer la note')}
                 </button>
               </div>
             </form>
